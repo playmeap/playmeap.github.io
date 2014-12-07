@@ -94,6 +94,7 @@ define([
             this.$nodeProgress = $(this.nodeProgress);
             return this;
         }
+
     });
 
     return AudioItemView;
