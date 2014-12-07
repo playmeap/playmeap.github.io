@@ -107,7 +107,9 @@ define([
                 var time = self.play_data.node.currentTime;
                 var process = time / self.play_data.data.duration * 100;
                 process = Math.ceil(process);
-
+                if(process > 100){
+                    process = 100;
+                }
                 $('.audio_' + self.play_data.data.aid + ' .progress-position').css({
                     left:process + '%'
                 });
@@ -161,7 +163,7 @@ define([
                 var time = this.play_data.data.duration;
                 var newTime = Math.ceil(time / 100 * value);
                 this.play_data.node.currentTime = newTime;
-
+                
                 $('.audio_' + this.play_data.data.aid + ' .progress-position').css({
                     left:value + '%'
                 });
