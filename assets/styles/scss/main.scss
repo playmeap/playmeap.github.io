@@ -1,0 +1,325 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+}
+
+a {
+  color: $color3;
+}
+
+#audioList {
+  display: none;
+}
+
+body {
+  background: $base_bg;
+  color: $base_color;
+}
+
+body.preload {
+  &:before {
+    position: fixed;
+  }
+}
+
+.preload {
+
+  position: relative;
+  min-width: 20px;
+  min-height: 20px;
+
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: url("#{$img_dir}preloader.gif") no-repeat center rgba(0, 0, 0, 0.5);
+    z-index: 100500;
+  }
+}
+
+.defaultText {
+  margin: 0;
+  padding: 50px 0;
+  text-align: center;
+  font-size: 28px;
+}
+
+.appHeader {
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  .controllersList {
+    li {
+      display: inline-block;
+    }
+    a {
+      padding: 5px;
+      font-size: 38px;
+      display: block;
+      color: $base_color;
+      &:hover {
+        color: $color3;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.appHeaderInfo {
+
+  h1,
+  h2 {
+    margin: 0;
+  }
+  h1 {
+    font-size: 18px;
+  }
+  h2 {
+    font-size: 16px;
+  }
+}
+
+.progress {
+  position: relative;
+  clear: left;
+  width: 100%;
+  height: 6px;
+  background: $color8;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  & > span {
+    display: block;
+    position: absolute;
+  }
+  & > span.progress-value {
+    background: $color9;
+    left: 0;
+    bottom: 2px;
+    width: 0;
+    height: 2px;
+    z-index: 1;
+//    @include transition(width .1s ease);
+  }
+
+  & > span.progress-position {
+
+    background: $color3;
+    width: 8px;
+    height: 8px;
+    left: 0;
+    bottom: -1px;
+    z-index: 2;
+
+    @include border-radius(8px);
+    @include transition(left .1s ease);
+  }
+}
+
+.appNavigation {
+  background: $color8;
+  text-align: center;
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+  }
+  li {
+    display: inline-block;
+    a {
+      color: $color4;
+      display: block;
+      height: 38px;
+      line-height: 38px;
+      padding: 0 12px;
+      &.active,
+      &:hover {
+        color: $color3;
+        text-decoration: none;
+        background: $color1;
+      }
+    }
+  }
+}
+
+.appContentCol {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin-top: 38px;
+  margin-bottom: 38px;
+  border: 1px solid $color1;
+  border-width: 0;
+  &:first-child {
+    border-width: 1px;
+  }
+
+  &:nth-child(2){
+    border-width: 1px 0 1px 0;
+  }
+
+  &:last-child
+  {
+    border-width: 1px;
+  }
+}
+
+.itemsList {
+  list-style: none;
+
+  & > li {
+
+  }
+}
+
+.audioListView {
+}
+
+.audioListItem {
+
+  overflow: hidden;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-top: 1px solid $color8;
+
+  &:first-child {
+    border-top: 0;
+  }
+
+  &:after
+  {
+    content:"";
+    display: block;
+    clear: left;
+  }
+
+  .controls{
+    width:40px;
+    float:left;
+  }
+
+  .actions > span,
+  .controls > span {
+    &:hover {
+      color: $color3;
+      cursor: pointer;
+    }
+  }
+
+  .progress{
+    display: none;
+  }
+
+  &.active  {
+    .progress{
+      display: block;
+    }
+  }
+}
+
+.appFooter {
+  border-top: 1px solid $color8;
+  height: 38px;
+  line-height: 38px;
+  text-align: center;
+  p {
+    margin: 0;
+  }
+  a {
+    color: $base_color;
+  }
+}
+
+.loginPage {
+  text-align: center;
+  button {
+    outline: none;
+    height: 60px;
+    width: 100%;
+    font-size: 32px;
+    font-size: 3.2rem;
+    background: $color3;
+    color: #fff;
+    border: none;
+    padding: 5px;
+    @include border-radius(2px);
+  }
+}
+
+.loginContainer {
+  min-height: 200px;
+  button {
+    margin-top: 80px;
+  }
+}
+
+.audioListNavigation
+{
+  text-align: center;
+  a
+  {
+    margin: 10px;
+    display: inline-block;
+    outline: none;
+    font-size: 14px;
+    background: $color3;
+    color: #fff;
+    border: none;
+    padding: 2px 15px;
+    text-decoration: none;
+    @include border-radius(2px);
+  }
+}
+
+
+.friendListView
+{
+  padding-left: 8px;
+  padding-right: 8px;
+
+  &:after
+  {
+    content:"";
+    display: block;
+    clear:both;
+  }
+}
+.friendListItem
+{
+  display: block;
+  padding: 0;
+  border:1px solid $base_bg;
+
+  &.active
+  {
+    border-color:$color3;
+  }
+  .userAva
+  {
+    display: block;
+    width:100%;
+    min-height: 29px;
+
+    &.preload img
+    {
+      display: none;
+    }
+  }
+
+  .userListItemLink
+  {
+    display: block;
+  }
+//  width:50px;
+//  height: 50px;
+//  float:left;
+//  position:relative;
+}

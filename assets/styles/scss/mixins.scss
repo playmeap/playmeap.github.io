@@ -1,0 +1,50 @@
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin font-face($font-family, $font-url, $font-name, $font-style, $font-weight) {
+  @font-face {
+    font: {
+      family: $font-family;
+      style: $font-style;
+      weight: $font-weight;
+    }
+    src: url($font-url + '/' + $font-name + '.otf');
+    // src: url($font-url + '/' + $font-name + '.eot') format('eot'),
+    // url($font-url + '/' + $font-name + '.woff') format('woff'),
+    // url($font-url + '/' + $font-name + '.ttf')  format('truetype'),
+    // url($font-url + '/' + $font-name + '.svg#' + $font-name) format('svg');
+  }
+}
+
+@mixin rotate($deg) {
+  -moz-transform: rotate($deg);
+  -webkit-transform: rotate($deg);
+  -o-transform: rotate($deg);
+  transform: rotate($deg);
+}
+
+@mixin box-shadow($left, $top, $blur, $color, $inset: false) {
+  @if $inset {
+    -webkit-box-shadow:inset $left $top $blur $color;
+    -moz-box-shadow:inset $left $top $blur $color;
+    box-shadow:inset $left $top $blur $color;
+  } @else {
+    -webkit-box-shadow: $left $top $blur $color;
+    -moz-box-shadow: $left $top $blur $color;
+    box-shadow: $left $top $blur $color;
+  }
+}
+
+@mixin gradient-vertical($start, $stop){
+  background: $start;
+  background: -moz-linear-gradient(top, $start 0%, $stop 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $start), color-stop(100%, $stop));
+  background: -webkit-linear-gradient(top, $start 0%, $stop 100%);
+  background: -o-linear-gradient(top, $start 0%, $stop 100%);
+  background: -ms-linear-gradient(top, $start 0%, $stop 100%);
+  background: linear-gradient(to bottom, $start 0%, $stop 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$start}', endColorstr='#{$stop}', GradientType=0);
+}
