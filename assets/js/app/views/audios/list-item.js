@@ -140,6 +140,8 @@ define([
             var data = this.model.toJSON();
             this.el.innerHTML = _.template(indexTpl)(data);
             this.$el.addClass('audio_item audio_' + data.aid);
+            this.nodeProgress = this.el.querySelector('.progress');
+            this.$nodeProgress = $(this.nodeProgress);
             return this;
         }
     });
