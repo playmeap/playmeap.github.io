@@ -64,16 +64,13 @@ define([
 
             var self = this;
             var data = {};
-            //data.owner_id = this.app.attributes.mid;
             data.album_id = this.app.models.index.get('play_album');
             data.audio_ids = [this.model.get('aid')];
-            //data.gid = this.model.get('owner_id');
 
             var userData = {};
             userData.owner_id = this.app.attributes.mid;
 
-            //TODO
-
+            //BIG TODO
             if(this.model.get('owner_id') !== this.app.attributes.mid){
 
                 VK.Api.call('audio.get', userData, function (r) {
@@ -94,7 +91,7 @@ define([
                                     audio_id:cloneObj.aid,
                                     owner_id:self.app.attributes.mid
                                 }, function(r){
-                                    //TODO
+                                    //TODO remove
                                 });
 
                             });
