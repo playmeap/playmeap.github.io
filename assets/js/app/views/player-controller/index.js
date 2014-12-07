@@ -186,10 +186,12 @@ define([
 
         play:function(id){
 
+            var model;
+
             if(parseInt(id)){
 
-                if(this.play_data.model){
-                    var model = this.play_data.model.collection.findWhere({aid:id});
+                if(this.play_data.model && this.play_data.model.collection){
+                    model = this.play_data.model.collection.findWhere({aid:id});
                 }
 
                 if(!model){

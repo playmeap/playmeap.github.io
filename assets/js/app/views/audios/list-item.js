@@ -55,7 +55,6 @@ define([
 
         rewind:function(e){
             var x = e.offsetX==undefined?e.layerX:e.offsetX;
-            console.log(this.$nodeProgress);
             var width = this.$nodeProgress.width();
             var process = x / width * 100;
             this.app.views.playerController.rewind(process);
