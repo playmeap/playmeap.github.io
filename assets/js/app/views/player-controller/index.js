@@ -138,7 +138,7 @@ define([
                 if(progress > 100){
                     progress = 100;
                 }
-                
+
                 $('.audio_' + self.play_data.data.aid + ' .progress-value').css({
                     width:progress + '%'
                 });
