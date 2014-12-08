@@ -8,7 +8,7 @@ define([
              App) {
 
     App.defaultOptions = {
-        version: "0.0.1",
+        version: "0.0.2",
         debug: true,
         apiId: 4664170,
         cacheAudio:10,

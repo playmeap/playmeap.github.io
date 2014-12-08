@@ -5,7 +5,7 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'views/player-controller/index.min',
+    'views/player-controller/index',
     'text!templates/index.html'
 ], function ($,
              _,
@@ -39,7 +39,7 @@ define([
             this.el.innerHTML = _.template(indexTpl)(data);
             $('body').html(this.el).removeClass('preload');
 
-            this.children.playerController = new PlayerControllerView({el:$('.playerController')});
+            this.children.playerController = new PlayerControllerView({el: $('.playerController')});
             this.app.views.playerController = this.children.playerController;
         }
     });

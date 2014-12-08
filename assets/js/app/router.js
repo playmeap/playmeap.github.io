@@ -5,6 +5,7 @@ define([
     'views/index.min',
     'views/audios/index.min',
     'views/friends/index.min',
+    'views/static.min',
     'collections/audios/index.min',
     'collections/users/users.min'
 ], function (_,
@@ -13,6 +14,7 @@ define([
              IndexViewClass,
              AudiosViewClass,
              FriendsViewCLass,
+             StaticViewClass,
              AudiosCollectionClass,
              UsersCollectionClass) {
 
@@ -205,15 +207,31 @@ define([
                 return this.navigate('#/login', {trigger: true});
             }
 
+            var staticActions = {
+                about:{
+                    tpl:'static/about.html',
+                    node:'.appContentNode',
+                    navSelector:'#geAboutPage'
+                }
+            };
+
+            if(!staticActions[action]) {
+                return this.navigate('#/', {trigger: true});
+            }
+
             if (!this.app.views.index) {
                 this.app.views.index = new IndexViewClass();
             }
 
-            this._createBaseCollections({
+
+            var collectionData = {
                 friends: {user_id: this.app.attributes.mid},
                 audio: {owner_id: this.app.attributes.mid},
                 audioFavorites: {owner_id: this.app.attributes.mid, album_id: true}
-            });
+            };
+
+            this._createBaseCollections(collectionData);
+            this.view = new StaticViewClass(staticActions[action]);
 
             this.app.log({msg: 'router > ' + action});
         }

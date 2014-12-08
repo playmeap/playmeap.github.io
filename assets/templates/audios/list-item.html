@@ -3,7 +3,11 @@
         <span class="glyphicon glyphicon-play play playcontrol"></span>
     </div>
     <div class="actions">
-        <span class="glyphicon glyphicon-arrow-right favorite" title="add to favorite"></span>
+        <% if(favorite){ %>
+        <span class="glyphicon glyphicon-remove-sign favorite-remove" title="Удалить из избранного"></span>
+        <% }else{ %>
+        <span class="glyphicon glyphicon-ok-sign favorite-add" title="Добавить в избранное"></span>
+        <% } %>
         <!--<span class="glyphicon glyphicon-cog"></span>-->
         <!--<span class="glyphicon glyphicon-ok"></span>-->
         <!--<span class="glyphicon glyphicon-trash"></span>-->

@@ -35,7 +35,7 @@ define([
 
         addOne: function (item) {
             this.children[item.cid] = new ListItemClass({parent: this, model: item});
-            this.$el.append(this.children[item.cid].render().el);
+            this.$el.prepend(this.children[item.cid].render().el);
         },
 
         render: function () {
@@ -50,7 +50,7 @@ define([
             }
 
             this.children = {};
-            _.each(this.collection.models, this.addOne, this);
+            _.each(this.collection.models.reverse(), this.addOne, this);
 
             return this;
         }

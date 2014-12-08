@@ -8,13 +8,13 @@ define([
 
     var PlayerController = Backbone.View.extend({
 
-        optoions:{
-            audio_restart:0
+        optoions: {
+            audio_restart: 0
         },
 
-        timers:{},
+        timers: {},
 
-        play_data:{},
+        play_data: {},
 
         initialize: function () {
             var audioListNode = document.createElement('div');
@@ -23,7 +23,7 @@ define([
             this.audioListNode = audioListNode;
         },
 
-        _playModel:function(model){
+        _playModel: function (model) {
 
             var self = this;
             var addItem = false;
@@ -34,9 +34,9 @@ define([
 
             _.each(this.audioListNode.childNodes, function (child, i) {
 
-                if(length > self.app.attributes.cacheAudio){
+                if (length > self.app.attributes.cacheAudio) {
                     var deleteCount = length - self.app.attributes.cacheAudio;
-                    if(i < deleteCount && child.id !== 'audio_item_' + data.aid){
+                    if (i < deleteCount && child.id !== 'audio_item_' + data.aid) {
                         child.remove();
                     }
 
@@ -53,28 +53,29 @@ define([
                 item = this.audioListNode.appendChild(node);
             }
 
-            if(item){
+            if (item) {
 
                 if (!this.play_data.model && item.currentTime) {
                     item.currentTime = 0;
                 }
 
                 //TODO
-                if(item){
+                if (item) {
                     $('.audio_' + data.aid + ' .progress-position').css({
-                        left:'0'
+                        left: '0'
                     });
                 }
 
-                if(this.play_data && this.play_data.node){
+                if (this.play_data && this.play_data.node) {
                     this.play_data.node.pause();
-                    if(this.play_data.node.currentTime){
+                    if (this.play_data.node.currentTime) {
                         this.play_data.node.currentTime = 0;
                     }
 
                     this.play_data = {};
                 }
 
+                this.play_data.played = false;
                 this.play_data.model = model;
                 this.play_data.data = data;
                 this.play_data.node = item;
@@ -85,43 +86,41 @@ define([
 
         },
 
-        _makeEvents:function(addItem){
+        _makeEvents: function (addItem) {
 
             var self = this;
 
-            if(this.timers.process){
+            if (this.timers.process) {
                 clearInterval(this.timers.process);
             }
 
-            if(this.timers.loaded){
+            if (this.timers.loaded) {
                 clearTimeout(this.timers.loaded);
             }
 
-            this.timers.loaded = setTimeout(function(){
-                if(self.play_data.node.buffered.length === 0){
+            this.timers.loaded = setTimeout(function () {
+                if (self.play_data.node.buffered.length === 0) {
+                    $('.audio_' + self.play_data.data.aid).addClass('error');
                     self.forward();
                 }
-            }, 2500);
+            }, 3000);
 
-            this.timers.process = setInterval(function(){
+            this.timers.process = setInterval(function () {
+
                 var time = self.play_data.node.currentTime;
                 var process = time / self.play_data.data.duration * 100;
                 process = Math.ceil(process);
-                if(process > 100){
+                if (process > 100) {
                     process = 100;
                 }
+
                 $('.audio_' + self.play_data.data.aid + ' .progress-position').css({
-                    left:process + '%'
+                    left: process + '%'
                 });
 
             }, 1000);
 
-            if(this.play_data && this.play_data.node && !addItem){
-                this.play_data.node.removeEventListener('progress', progress);
-                this.play_data.node.removeEventListener('ended', ended);
-            }
-
-            var progress = function(){
+            var progress = function () {
 
                 var progress = 0;
                 var ranges = [];
@@ -133,45 +132,50 @@ define([
                     ]);
                 }
 
-                if(ranges && ranges[0] && ranges[0][1]){
+                if (ranges && ranges[0] && ranges[0][1]) {
                     progress = ranges[0][1] / self.play_data.data.duration * 100;
                 }
 
-                if(progress > 100){
+                if (progress > 100) {
                     progress = 100;
                 }
 
                 $('.audio_' + self.play_data.data.aid + ' .progress-value').css({
-                    width:progress + '%'
+                    width: progress + '%'
                 });
 
             };
 
-            var ended = function(){
+            var ended = function () {
                 self.forward();
             };
 
-            if(addItem){
+            if (this.play_data && this.play_data.node && !addItem) {
+                this.play_data.node.removeEventListener('progress', progress);
+                this.play_data.node.removeEventListener('ended', ended);
+            }
+
+            if (addItem) {
                 this.play_data.node.addEventListener('progress', progress);
                 this.play_data.node.addEventListener('ended', ended);
             }
 
         },
 
-        rewind:function(value){
-            if(this.play_data.data){
+        rewind: function (value) {
+            if (this.play_data.data) {
                 var time = this.play_data.data.duration;
                 var newTime = Math.ceil(time / 100 * value);
                 this.play_data.node.currentTime = newTime;
-                
+
                 $('.audio_' + this.play_data.data.aid + ' .progress-position').css({
-                    left:value + '%'
+                    left: value + '%'
                 });
 
             }
         },
 
-        _startPlay:function(){
+        _startPlay: function () {
 
             var data = this.play_data.model.toJSON();
             var $itemsOff = $('.audio_item').not('.audio_' + data.aid);
@@ -190,47 +194,47 @@ define([
             this.play_data.node.play();
         },
 
-        play:function(id){
+        play: function (id) {
 
             var model;
 
-            if(parseInt(id)){
+            if (parseInt(id)) {
 
-                if(this.play_data.model && this.play_data.model.collection){
-                    model = this.play_data.model.collection.findWhere({aid:id});
+                if (this.play_data.model && this.play_data.model.collection) {
+                    model = this.play_data.model.collection.findWhere({aid: id});
                 }
 
-                if(!model){
-                    model = this.app.collections.audioList.findWhere({aid:id});
-                    if(!model){
-                        model = this.app.collections.audioFavorites.findWhere({aid:id});
+                if (!model) {
+                    model = this.app.collections.audioList.findWhere({aid: id});
+                    if (!model) {
+                        model = this.app.collections.audioFavorites.findWhere({aid: id});
                     }
                 }
             }
 
-            if(id && id.attributes){
+            if (id && id.attributes) {
                 model = id;
             }
 
-            if(model){
+            if (model) {
                 this._playModel(model);
             }
         },
 
-        pause:function(id){
-            if(this.play_data && this.play_data.node){
+        pause: function (id) {
+            if (this.play_data && this.play_data.node) {
                 this.play_data.node.pause();
                 var $items = $('.audio_' + this.play_data.data.aid);
                 $items.trigger('pause');
             }
         },
 
-        forward:function(){
+        forward: function () {
             var model = this.play_data.model.collection.next().getElement();
             this.play(model);
         },
 
-        backward:function(){
+        backward: function () {
             var model = this.play_data.model.collection.prev().getElement();
             this.play(model);
         }

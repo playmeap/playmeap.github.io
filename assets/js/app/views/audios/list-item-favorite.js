@@ -18,52 +18,54 @@ define([
         className: 'col-sm-12 audioListItem disable',
 
         events: {
-            'click .favorite': 'removeToFavorite',
-            'click .play':'playItem',
-            'click .pause':'pauseItem',
-            'click .progress':'rewind'
+            'click .favorite-remove': 'removeToFavorite',
+            'click .play': 'playItem',
+            'click .pause': 'pauseItem',
+            'click .progress': 'rewind'
         },
 
-        initialize:function(){
+        initialize: function () {
 
 
-            this.model.collection.bind('remove', function(item){
-                if(item.cid == this.model.cid){
+            this.model.collection.bind('remove', function (item) {
+                if (item.cid == this.model.cid) {
                     this.remove();
                 }
             }, this);
 
-            var play = function(){
+            this.play = function () {
+                this.el.classList.add('active');
                 this.el.querySelector('.playcontrol').classList.add('glyphicon-pause', 'pause');
-                this.el.querySelector('.playcontrol').classList.remove('glyphicon-play','play');
+                this.el.querySelector('.playcontrol').classList.remove('glyphicon-play', 'play');
             }.bind(this);
 
-            var stop = function(){
+            this.stop = function () {
+                this.el.classList.remove('active');
                 this.el.querySelector('.playcontrol').classList.remove('glyphicon-pause', 'pause');
-                this.el.querySelector('.playcontrol').classList.add('glyphicon-play','play');
+                this.el.querySelector('.playcontrol').classList.add('glyphicon-play', 'play');
             }.bind(this);
 
-            var pause = function(){
+            this.pause = function () {
                 this.el.querySelector('.playcontrol').classList.remove('glyphicon-pause', 'pause');
-                this.el.querySelector('.playcontrol').classList.add('glyphicon-play','play');
+                this.el.querySelector('.playcontrol').classList.add('glyphicon-play', 'play');
             }.bind(this);
 
-            this.$el.on('play', play);
-            this.$el.on('stop', stop);
-            this.$el.on('pause', pause);
+            this.$el.on('play', this.play);
+            this.$el.on('stop', this.stop);
+            this.$el.on('pause', this.pause);
 
         },
 
-        playItem:function(){
+        playItem: function () {
             this.app.views.playerController.play(this.model.get('aid'));
         },
 
-        pauseItem:function(){
+        pauseItem: function () {
             this.app.views.playerController.pause(this.model);
         },
 
-        rewind:function(e){
-            var x = e.offsetX==undefined?e.layerX:e.offsetX;
+        rewind: function (e) {
+            var x = e.offsetX == undefined ? e.layerX : e.offsetX;
             var width = this.$nodeProgress.width();
             var process = x / width * 100;
             this.app.views.playerController.rewind(process);
@@ -88,10 +90,17 @@ define([
 
         render: function () {
             var data = this.model.toJSON();
+            data.favorite = (this.app.collections.audioFavorites.where({aid:data.aid}).length >= 1)? 1 : 0;
             this.el.innerHTML = _.template(indexTpl)(data);
             this.$el.addClass('audio_item audio_' + data.aid);
             this.nodeProgress = this.el.querySelector('.progress');
             this.$nodeProgress = $(this.nodeProgress);
+
+            var active_composition = this.app.models.index.get('active_composition');
+            if(active_composition && active_composition === data.aid){
+                this.play();
+            }
+
             return this;
         }
 

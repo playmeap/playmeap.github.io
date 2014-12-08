@@ -31,21 +31,21 @@ define([
                 nodeSelector: '.appContentCol1',
                 parent: this,
                 createCollections: options.createCollections,
-                title: '<h2>Music list</h2>'
+                title: '<h2>Аудио записи</h2>'
             });
 
             this.children.appContentCol2 = new FavoritesAudioView({
                 nodeSelector: '.appContentCol2',
                 parent: this,
                 createCollections: options.createCollections,
-                title: '<h2>Favorite playlist</h2>'
+                title: '<h2>Избранное</h2>'
             });
 
             this.children.appContentCol3 = new FriendsListView({
                 nodeSelector: '.appContentCol3',
                 parent: this,
                 createCollections: options.createCollections,
-                title: '<h2>Friends list</h2>'
+                title: '<h2>Друзья</h2>'
             });
 
             this.render();
