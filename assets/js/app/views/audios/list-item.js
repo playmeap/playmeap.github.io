@@ -66,7 +66,13 @@ define([
         },
 
         rewind: function (e) {
+
             var x = e.offsetX == undefined ? e.layerX : e.offsetX;
+            if(x == undefined){
+                x = e.pageX || e.x;
+                x = x -  e.target.getBoundingClientRect().left;
+            }
+
             var width = this.$nodeProgress.width();
             var process = x / width * 100;
             this.app.views.playerController.rewind(process);

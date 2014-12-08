@@ -5,7 +5,7 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'views/audios/list-item'
+    'views/audios/list-item.min'
 ], function ($,
              _,
              Backbone,
