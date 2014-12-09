@@ -56,11 +56,11 @@ define([
             if (item) {
 
                 if (!this.play_data.model && item.currentTime) {
-                    item.currentTime = 0;
+                    //item.currentTime = 0;
                 }
 
                 //TODO
-                if (item) {
+                if (item && !this.play_data.node || item && !this.play_data.node.currentTime) {
                     $('.audio_' + data.aid + ' .progress-position').css({
                         left: '0'
                     });
@@ -69,7 +69,7 @@ define([
                 if (this.play_data && this.play_data.node) {
                     this.play_data.node.pause();
                     if (this.play_data.node.currentTime) {
-                        this.play_data.node.currentTime = 0;
+                        //this.play_data.node.currentTime = 0;
                     }
 
                     this.play_data = {};
@@ -221,7 +221,16 @@ define([
             }
         },
 
-        pause: function (id) {
+        stop:function(){
+            if (this.play_data && this.play_data.node) {
+                this.play_data.node.pause();
+                this.play_data.node.currentTime = 0;
+                var $items = $('.audio_' + this.play_data.data.aid);
+                $items.trigger('stop');
+            }
+        },
+
+        pause: function () {
             if (this.play_data && this.play_data.node) {
                 this.play_data.node.pause();
                 var $items = $('.audio_' + this.play_data.data.aid);

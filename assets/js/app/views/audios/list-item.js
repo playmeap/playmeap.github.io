@@ -21,6 +21,7 @@ define([
             'click .favorite-remove': 'removeFromFavorite',
             'click .play': 'playItem',
             'click .pause': 'pauseItem',
+            'click .stop':'stopItem',
             'click .progress': 'rewind',
             'click .download':'downloadItem'
         },
@@ -40,17 +41,21 @@ define([
                 this.el.classList.add('active');
                 this.el.querySelector('.playcontrol').classList.add('glyphicon-pause', 'pause');
                 this.el.querySelector('.playcontrol').classList.remove('glyphicon-play', 'play');
+                this.el.querySelector('.stop').classList.remove('hidden');
+
             }.bind(this);
 
             this.stop = function () {
                 this.el.classList.remove('active');
                 this.el.querySelector('.playcontrol').classList.remove('glyphicon-pause', 'pause');
                 this.el.querySelector('.playcontrol').classList.add('glyphicon-play', 'play');
+                this.el.querySelector('.stop').classList.add('hidden');
             }.bind(this);
 
             this.pause = function () {
                 this.el.querySelector('.playcontrol').classList.remove('glyphicon-pause', 'pause');
                 this.el.querySelector('.playcontrol').classList.add('glyphicon-play', 'play');
+                this.el.querySelector('.stop').classList.remove('hidden');
             }.bind(this);
 
             this.$el.on('play', this.play);
@@ -60,29 +65,32 @@ define([
 
         downloadItem:function(){
 
-            var url;
-            var serverUrl = this.app.attributes.proxySever;
-            var itemUrl = this.model.get('url');
-            itemUrl = itemUrl.split('?')[0];
-            var name = this.model.get('title') + ' - ' + this.model.get('artist');
-            name = name.split(' ').join('_');
-
-            var exp = itemUrl.substr(itemUrl.lastIndexOf('.'), itemUrl.length);
-
-            url = serverUrl;
-            url += 'url=' + itemUrl;
-            url += '&name=' + name + exp;
-            url = url.replace('https', 'http');
-            console.log(url);
-            window.open(url, '_blank');
+            //var url;
+            //var serverUrl = this.app.attributes.proxySever;
+            //var itemUrl = this.model.get('url');
+            //itemUrl = itemUrl.split('?')[0];
+            //var name = this.model.get('title') + ' - ' + this.model.get('artist');
+            //name = name.split(' ').join('_');
+            //
+            //var exp = itemUrl.substr(itemUrl.lastIndexOf('.'), itemUrl.length);
+            //
+            //url = serverUrl;
+            //url += 'url=' + itemUrl;
+            //url += '&name=' + name + exp;
+            //url = url.replace('https', 'http');
+            //window.open(url, '_blank');
         },
 
         playItem: function () {
             this.app.views.playerController.play(this.model.get('aid'));
         },
 
+        stopItem:function(){
+            this.app.views.playerController.stop();
+        },
+
         pauseItem: function () {
-            this.app.views.playerController.pause(this.model.get('aid'));
+            this.app.views.playerController.pause();
         },
 
         rewind: function (e) {

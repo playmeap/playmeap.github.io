@@ -58,13 +58,7 @@ define([
         },
 
         downloadItem:function(){
-            var name = this.model.get('title') + ' - ' + this.model.get('artist');
-            var itemUrl = this.model.get('url').split('?')[0];
-            serverUrl = this.app.attributes.proxySever;
-            var url = serverUrl + 'url=' + itemUrl;
-            url += '&name=' + name;
-            url += itemUrl.substr(itemUrl.lastIndexOf('.'), itemUrl.length);
-            window.open(url, '_blank');
+
         },
 
         playItem: function () {
@@ -72,7 +66,7 @@ define([
         },
 
         pauseItem: function () {
-            this.app.views.playerController.pause(this.model);
+            this.app.views.playerController.pause();
         },
 
         rewind: function (e) {
