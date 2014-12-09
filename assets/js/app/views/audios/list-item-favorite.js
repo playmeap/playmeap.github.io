@@ -21,7 +21,8 @@ define([
             'click .favorite-remove': 'removeToFavorite',
             'click .play': 'playItem',
             'click .pause': 'pauseItem',
-            'click .progress': 'rewind'
+            'click .progress': 'rewind',
+            'click .download':'downloadItem'
         },
 
         initialize: function () {
@@ -54,6 +55,16 @@ define([
             this.$el.on('stop', this.stop);
             this.$el.on('pause', this.pause);
 
+        },
+
+        downloadItem:function(){
+            var name = this.model.get('title') + ' - ' + this.model.get('artist');
+            var itemUrl = this.model.get('url').split('?')[0];
+            serverUrl = this.app.attributes.proxySever;
+            var url = serverUrl + 'url=' + itemUrl;
+            url += '&name=' + name;
+            url += itemUrl.substr(itemUrl.lastIndexOf('.'), itemUrl.length);
+            window.open(url, '_blank');
         },
 
         playItem: function () {

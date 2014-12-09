@@ -11,6 +11,7 @@ define([
         version: "0.0.2",
         debug: true,
         apiId: 4664170,
+        proxySever:'http://playmeap.appspot.com/?',
         cacheAudio:10,
         scope: {
             textValues: ['friends', 'audio', 'status', 'groups'],
@@ -27,6 +28,7 @@ define([
 
     if (window.location.origin.indexOf('.local') >= 0) {
         App.defaultOptions.apiId = 4664902;
+        //App.defaultOptions.proxySever = 'http://playme-server.local/?';
     }
 
 
