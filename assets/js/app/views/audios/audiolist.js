@@ -41,6 +41,7 @@ define([
 
         render: function () {
 
+            var self = this;
             var node = this.parent.el.querySelector(this.options.nodeSelector);
             node.classList.remove('preload');
 

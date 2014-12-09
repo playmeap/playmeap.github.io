@@ -11,16 +11,76 @@ define([
         optoions: {
             audio_restart: 0
         },
-
         timers: {},
-
         play_data: {},
+
+        events:{
+            'keyup .searchUser':'getSearchUser'
+        },
 
         initialize: function () {
             var audioListNode = document.createElement('div');
             audioListNode.id = 'audioList';
             this.el.appendChild(audioListNode);
             this.audioListNode = audioListNode;
+        },
+
+        getSearchUser:function(e){
+
+            var self = this;
+            var target = e.target;
+
+            if(this.timers.searchUserInput){
+                clearTimeout(this.timers.searchUserInput);
+            }
+
+            if(this.timers.searchUserInputDone){
+                clearTimeout(this.timers.searchUserInputDone);
+            }
+
+            this.timers.searchUserInput = setTimeout(function(){
+
+                if(target != document.activeElement){
+                    clearTimeout(self.timers.searchUserInput);
+                    return false;
+                }
+
+
+                var link = target.value;
+
+                if(link.indexOf('/') > 0){
+                    link = link.substr(link.lastIndexOf('/') + 1, link.length);
+                }
+
+                if(link == ''){
+                    return false;
+                }
+
+                var data = {};
+                data.user_ids = [link];
+                var node = self.el.querySelector('.error-block-user');
+
+                VK.Api.call('users.get', data, function (r) {
+
+                    if (r && r.response) {
+
+                        var uid = r.response[0].uid;
+                        self.app.router.navigate('#/id_' + uid + '/audios/list', {trigger:true});
+                        node.classList.add('hidden');
+                        target.value = '';
+                        target.classList.add('done');
+                        self.timers.searchUserInputDone = setTimeout(function(){
+                            target.classList.remove('done');
+                        }, 500);
+
+
+                    } else {
+                        node.classList.remove('hidden');
+                        node.innerHTML = r.error.error_msg;
+                    }
+                });
+
+            }, 500);
         },
 
         _playModel: function (model) {

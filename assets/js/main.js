@@ -14,9 +14,13 @@ define([
         proxySever:'http://playmeap.appspot.com/?',
         cacheAudio:10,
         scope: {
-            textValues: ['friends', 'audio', 'status', 'groups'],
-            intValues: [2, 8, 1024, 262144]
-        }
+            textValues: ['friends', 'audio', 'status', 'groups', 'offline'],
+            intValues: [2, 8, 1024, 262144, 65536]
+        },
+
+        defaultToken:'',
+        defaultId:''
+
     };
 
     App.defaultOptions.getScope = function(){

@@ -44,7 +44,8 @@ define([
     var App = {
 
         attributes: {
-            debug: false
+            debug: false,
+            logined:false
         },
 
         defaultOptions: {},

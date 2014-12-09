@@ -54,7 +54,8 @@ define([
         reload: function (data) {
             if (data.childs) {
                 for (var n in data.childs) {
-                    document.querySelector('.' + data.childs[n]).classList.add('preload');
+                    var node = $('.' + data.childs[n]);
+                    node.addClass('preload');
                 }
             }
         },

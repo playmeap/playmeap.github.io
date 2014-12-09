@@ -1,6 +1,57 @@
 
 <div class="appHeader playerController">
+    <div class="container">
+        <div class="row">
+            <a href="/" class="col-xs-2 col-md-1 appLogo">
+                <img src="assets/images/logo.png" class="img-responsive" alt=""/>
+            </a>
+            <div class="col-md-2 appHeaderInfo">
+                <h1>playMe</h1>
+                <p>Музыкальный плеер</p>
+            </div>
 
+            <div class="col-md-4 hidden">
+                <div class="playerSmallController">
+                        <ul class="controllersList">
+                            <li><a class="glyphicon glyphicon-backward backward" href="#control/backward"></a></li>
+                            <li><a class="glyphicon glyphicon-play play playcontrol" href="#control/play"></a></li>
+                            <li><a class="glyphicon glyphicon-stop stop hidden" href="#control/stop"></a></li>
+                            <li><a class="glyphicon glyphicon-forward forward" href="#control/forward"></a></li>
+                            <!--<li><a class="glyphicon glyphicon-volume-off volume-off" href="#control/volume-off"></a></li>-->
+                        </ul>
+
+                        <!--<hgroup class="col-sm-10">-->
+                            <!--<h1>title</h1>-->
+                            <!--<h2> artist </h2>-->
+                        <!--</hgroup>-->
+
+                        <!--<div class="col-sm-2">-->
+                            <!--<span> duration_time.min : duration_time.sec </span>-->
+                        <!--</div>-->
+
+                        <!--<div class="progress">-->
+                            <!--<span class="progress-position"></span>-->
+                            <!--<span class="progress-value"></span>-->
+                        <!--</div>-->
+
+                    <div class="songData">
+                        <span class="title">title</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-md-2 formBlock">
+                <h2>Музыка пользователя:</h2>
+                <p>id или ссылка на страницу</p>
+                <input class="form-control searchUser" type="text"/>
+                <p class="error-block-user hidden"></p>
+            </div>
+            <div class="col-xs-6 col-md-3 formBlock hidden">
+                <h2>Поиск:</h2>
+                <p>поиск по всем аудиозаписям</p>
+                <input class="form-control" type="text"/>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="appNavigation">

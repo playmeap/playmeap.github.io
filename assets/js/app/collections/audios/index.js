@@ -104,7 +104,8 @@ define([
                 };
 
                 var album_id = self.app.models.index.get('play_album');
-                if (!album_id) {
+                if (!album_id && this.app.attributes.logined) {
+
                     VK.Api.call('audio.getAlbums', data, function (r) {
 
                         if (r && r.response) {
@@ -113,13 +114,16 @@ define([
 
                         }
                     });
-                } else {
+                } else if(this.app.attributes.logined){
                     loadItems.apply(self);
+                }else{
+                    self.reset([]);
                 }
 
             } else {
 
                 delete data.album_id;
+
                 VK.Api.call('audio.get', data, function (r) {
                     if (r && r.response) {
 

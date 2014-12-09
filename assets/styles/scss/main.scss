@@ -12,8 +12,7 @@ a {
   display: none;
 }
 
-.pl-20
-{
+.pl-20 {
   padding-left: 20px;
 }
 
@@ -77,10 +76,20 @@ body.preload {
   }
 }
 
+.appLogo {
+
+  img {
+    width: 80px;
+    height: auto;
+    outline: none;
+  }
+}
+
 .appHeaderInfo {
 
   h1,
-  h2 {
+  h2,
+  p {
     margin: 0;
   }
   h1 {
@@ -88,6 +97,41 @@ body.preload {
   }
   h2 {
     font-size: 16px;
+  }
+}
+
+.formBlock {
+  h2 {
+    font-size: 14px;
+    margin: 0;
+  }
+  p 
+  {
+    font-size: 12px;
+    marg-bottom: 6px;
+  }
+  .form-control {
+    color:$base_bg;
+    outline: 0;
+    border:1px solid transparent;
+    font-size: 14px;
+    line-height: 18px;
+    padding:6px;
+    display: block;
+    width: 100%;
+
+    background:#fff;
+    @include border-radius($basic_radius);
+
+    &:focus
+    {
+      border-color:$color3;
+    }
+
+    &.done
+    {
+      border-color:green;
+    }
   }
 }
 
@@ -113,7 +157,7 @@ body.preload {
     width: 0;
     height: 2px;
     z-index: 1;
-//    @include transition(width .1s ease);
+    //    @include transition(width .1s ease);
   }
 
   & > span.progress-position {
@@ -182,45 +226,37 @@ body.preload {
   padding-bottom: 5px;
   border-top: 1px solid $color8;
 
-  &.error
-  {
-    color:$color8;
+  &.error {
+    color: $color8;
   }
 
   &:first-child {
     border-top: 0;
   }
 
-  &:after
-  {
-    content:"";
+  &:after {
+    content: "";
     display: block;
     clear: left;
   }
 
   .itemControls {
     text-align: center;
-//    width:15%;
-//    float:left;
 
     &:after {
-      content:"";
+      content: "";
       display: block;
-      clear:left;
+      clear: left;
     }
   }
 
   .itemHead {
-//    width:85%;
-//    padding-left: 17%;
+
   }
 
   .itemControls > .actions,
-  .itemControls > .controls 
-  {
-    text-align:center;
-//    float:left;
-//    width:50%;
+  .itemControls > .controls {
+    text-align: center;
     display: inline-block;
   }
 
@@ -229,26 +265,26 @@ body.preload {
 
     display: inline-block;
 
-    width:30px;
+    width: 30px;
     height: 30px;
     line-height: 30px;
     text-align: center;
-    font-size:16px;
-    border:1px solid transparent;
+    font-size: 16px;
+    border: 1px solid transparent;
 
     &:hover {
       color: $color3;
       cursor: pointer;
-      border:1px solid $color8;
+      border: 1px solid $color8;
     }
   }
 
-  .progress{
+  .progress {
     display: none;
   }
 
-  &.active  {
-    .progress{
+  &.active {
+    .progress {
       display: block;
     }
   }
@@ -290,11 +326,9 @@ body.preload {
   }
 }
 
-.audioListNavigation
-{
+.audioListNavigation {
   text-align: center;
-  a
-  {
+  a {
     margin: 10px;
     display: inline-block;
     outline: none;
@@ -308,47 +342,40 @@ body.preload {
   }
 }
 
-
-.friendListView
-{
+.friendListView {
   padding-left: 8px;
   padding-right: 8px;
 
-  &:after
-  {
-    content:"";
+  &:after {
+    content: "";
     display: block;
-    clear:both;
+    clear: both;
   }
 }
-.friendListItem
-{
+
+.friendListItem {
   display: block;
   padding: 0;
-  border:1px solid $base_bg;
+  border: 1px solid $base_bg;
 
-  &.active
-  {
-    border-color:$color3;
+  &.active {
+    border-color: $color3;
   }
-  .userAva
-  {
+  .userAva {
     display: block;
-    width:100%;
+    width: 100%;
     min-height: 29px;
 
-    &.preload img
-    {
+    &.preload img {
       display: none;
     }
   }
 
-  .userListItemLink
-  {
+  .userListItemLink {
     display: block;
   }
-//  width:50px;
-//  height: 50px;
-//  float:left;
-//  position:relative;
+  //  width:50px;
+  //  height: 50px;
+  //  float:left;
+  //  position:relative;
 }
