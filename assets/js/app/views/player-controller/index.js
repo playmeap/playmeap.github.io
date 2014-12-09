@@ -52,13 +52,14 @@ define([
                     link = link.substr(link.lastIndexOf('/') + 1, link.length);
                 }
 
-                if(link == ''){
-                    return false;
-                }
-
                 var data = {};
                 data.user_ids = [link];
                 var node = self.el.querySelector('.error-block-user');
+
+                if(link == ''){
+                    node.innerHTML = '';
+                    return false;
+                }
 
                 VK.Api.call('users.get', data, function (r) {
 
