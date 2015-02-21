@@ -1,0 +1,25 @@
+$plugin-bootstrap: 'bootstrap-3.3.1';
+$plugin-font-awesome: 'font-awesome-4.2.0';
+
+$dir_fonts: '../../fonts/';
+$dir_images: '../../images/';
+
+$fa-font-path: '../../plugins/' + $plugin-font-awesome + '/fonts' !default;
+$icon-font-path: '../../plugins/' + $plugin-bootstrap + '/fonts' !default;
+
+$color1: #323232;
+$color2: #939696;
+$color3: #009CFF;
+$color4: #E3E9E6;
+$color5: #ACC2C9;
+$color6: #1c8bd3;
+$color7: #262626;
+$color8: #2f2f2f;
+$color9: #c9c9c9;
+
+$base_bg: #1d1d1d;
+$base_color: #c9c9c9;
+
+$color-preload: rgba(0,0,0,0.5);
+
+$height-input-big:38px;

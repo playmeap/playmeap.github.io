@@ -1,0 +1,32 @@
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin font-face($font-family, $font-url, $font-name, $font-style:normal, $font-weight:normal, $exp:'ttf') {
+  @font-face {
+    font: {
+      family: $font-family;
+      style: $font-style;
+      weight: $font-weight;
+    }
+    src: url($font-url + '/' + $font-name + '.' + $exp);
+    // src: url($font-url + '/' + $font-name + '.eot') format('eot'),
+    // url($font-url + '/' + $font-name + '.woff') format('woff'),
+    // url($font-url + '/' + $font-name + '.ttf')  format('truetype'),
+    // url($font-url + '/' + $font-name + '.svg#' + $font-name) format('svg');
+  }
+}
+
+@mixin rotate($deg) {
+  -moz-transform: rotate($deg);
+  -webkit-transform: rotate($deg);
+  -o-transform: rotate($deg);
+  transform: rotate($deg);
+}
+
+/* TEXT SHADOW */
+@mixin text-shadow($x: 2px, $y: 2px, $blur: 5px, $color: rgba(0,0,0,.4)) {
+  text-shadow: $x $y $blur $color;
+}

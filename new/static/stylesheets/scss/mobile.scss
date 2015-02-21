@@ -1,0 +1,22 @@
+@media(max-width: $screen-xs-max) {
+
+}
+
+/* deprecated: @screen-tablet, or @screen-sm */
+@media (min-height: 768px) and (min-width: $screen-sm-min) {
+
+}
+
+@media(min-width: $screen-sm-min) {
+
+}
+
+/* deprecated: @screen-desktop, or @screen-md */
+@media(min-width: $screen-md-min) {
+
+}
+
+/* deprecated: @screen-lg-desktop, or @screen-lg */
+@media(min-width: $screen-lg-min) {
+
+}
