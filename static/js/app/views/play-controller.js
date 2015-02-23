@@ -366,6 +366,7 @@ define([
 
                 this.nodes.cache.appendChild(item);
                 this.nodes.item = item;
+                model.views.item = item;
                 this.model.set({acid: cid});
 
                 item.play();

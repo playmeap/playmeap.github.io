@@ -54,8 +54,23 @@ define([
 
                     var items = r.response.slice(1, r.response.length);
 
-                    self.set(items);
-                    self.trigger('fake:reset');
+                    items = _.map(items, function(item){
+                        var model = self.findWhere({aid:item.aid, owner_id:item.owner_id});
+                        if(!model){
+                            return item;
+                        }
+
+                        data = _.extend(item, model.toJSON());
+
+                        /**
+                         * FIX model to view link
+                         * and node
+                         */
+                        return data;
+
+                    }, this);
+
+                    self.reset(items);
 
                 } else {
                     alert(r.error.error_msg);

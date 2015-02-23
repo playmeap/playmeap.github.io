@@ -1,8 +1,13 @@
 <div class="audios-list-item-controls">
 
-    <button class="audios-list-item-control player-controller-control fa fa-pause audios-list-item-control-pause <% if(!play){ %>display-none <% } %>"></button>
-    <button class="audios-list-item-control player-controller-control fa fa-play audios-list-item-control-play <% if(play){ %>display-none <% } %>"></button>
+    <div class="audios-list-item-controls-first">
+        <button class="audios-list-item-control player-controller-control fa fa-pause audios-list-item-control-pause <% if(!play){ %>display-none <% } %>"></button>
+        <button class="audios-list-item-control player-controller-control fa fa-play audios-list-item-control-play <% if(play){ %>display-none <% } %>"></button>
+    </div>
 
+    <div class="audios-list-item-controls-second">
+
+    </div>
 </div>
 
 <div class="audios-list-item__title">

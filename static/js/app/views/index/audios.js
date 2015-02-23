@@ -20,10 +20,12 @@ define([
             this.wrap = options.wrap;
             this.collection = this.app.collections.audios;
             this.collection.bind('reset', this.render, this);
-            this.collection.bind('fake:reset', this.render, this);
+            //this.collection.bind('fake:reset', this.removePreload, this);
             //this.collection.bind('add', this.addItem, this);
 
             this.collection.collectionModel.bind('change', this.changeCollectionModel, this);
+            this.render();
+
         },
 
         changeCollectionModel:function(){
