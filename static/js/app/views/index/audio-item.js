@@ -114,6 +114,8 @@ define([
             this.nodes.$progressPosition = this.$el.find('.audios-list-item-progress-position');
             this.nodes.$progressValue = this.$el.find('.audios-list-item-progress-value');
 
+            //this.$el.append(JSON.stringify(data));
+
             return this;
         }
 

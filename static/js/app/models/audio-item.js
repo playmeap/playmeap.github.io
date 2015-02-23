@@ -8,6 +8,10 @@ define([
 ], function ($,
              _,
              Backbone) {
-    var AudioItemModel = Backbone.Model.extend({});
+    var AudioItemModel = Backbone.Model.extend({
+        defaults:{
+            play:false
+        }
+    });
     return AudioItemModel;
 });
