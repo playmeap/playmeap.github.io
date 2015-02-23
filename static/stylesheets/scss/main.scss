@@ -1,0 +1,180 @@
+.app-header {
+  padding-top: $height-input-big;
+}
+
+.app-header-title {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.audios-list-item-control,
+.player-controller-control {
+  border: none;
+  color: $color9;
+  background: none;
+  border: 0;
+  outline: none;
+
+  &.active,
+  &:hover {
+    color: $color3;
+  }
+}
+
+.player-controller-search__input {
+  display: block;
+  width: 100%;
+  height: $height-input-big;
+  line-height: $height-input-big;
+  color: $color8;
+  padding-left: $height-input-big / 2;
+  padding-right: $height-input-big / 2;
+}
+
+.albums-list-view {
+}
+
+.search-list-view {
+}
+
+.audios-list {
+}
+
+.search-list {
+  //  color: $base_bg;
+  //  background: $color2;
+}
+
+.albums-list-view,
+.friends-list-view,
+.audios-list-view {
+  padding-left: 0;
+}
+
+.friends-list-view {
+  @include clearfix();
+}
+
+.friends-list-item {
+  float: left;
+  display: block;
+  //  width: 30px;
+  //  height:20px;
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.albums-list-item,
+.audios-list-item {
+  display: block;
+  border-bottom: 1px dashed $color8;
+  padding: 9px 0;
+}
+
+.albums-list-item {
+  min-height: $height-input-big;
+  line-height: $height-input-big;
+  text-align: center;
+}
+
+.friends-list-view_search {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.audios-list-view_search {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.friends-list-item-link {
+  display: block;
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+}
+
+.player-controller-controls {
+  text-align: center;
+  min-height: $height-input-big;
+
+  .player-controller-control {
+    line-height: $height-input-big;
+    display: inline-block;
+    font-size: $height-input-big / 2;
+  }
+}
+
+.player-controller-control {
+
+}
+
+.player-controller-player-header {
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+}
+
+.player-controller-player__artist {
+  font-weight: bold;
+}
+
+.player-controller-player__title {
+}
+
+.progress {
+  position: relative;
+  clear: left;
+  width: 100%;
+  height: 6px;
+  background: #2f2f2f;
+  cursor: pointer;
+}
+
+.progress-position {
+  position: absolute;
+  background: #009CFF;
+  width: 8px;
+  height: 8px;
+  left: 0;
+  bottom: -1px;
+  z-index: 2;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  -webkit-transition: left 0.1s ease;
+  -o-transition: left 0.1s ease;
+  transition: left 0.1s ease;
+}
+
+.progress-value {
+  background: #c9c9c9;
+  left: 0;
+  bottom: 2px;
+  width: 0;
+  height: 2px;
+  z-index: 1;
+  position: absolute;
+}
+
+.audios-list-item-progress {
+  clear: left;
+  margin-top: 6px;
+}
+
+.audios-list-item-controls {
+  float: left;
+}
+
+#login_button{
+  background: $color6;
+  height: $height-input-big;
+  line-height: $height-input-big;
+  font-weight: bold;
+  font-size: 18px;
+  border:none;
+  padding: 0 50px;
+}
