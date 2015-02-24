@@ -18,7 +18,7 @@ define([
 
             this.nodes = {};
             this.parent = options.parent;
-            this.parent.model.bind('change:acid', this.render, this);
+            this.parent.model.bind('change:aid', this.render, this);
 
         },
 

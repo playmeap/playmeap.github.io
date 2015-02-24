@@ -16,6 +16,6 @@
 
 
 <div class="audios-list-item-progress progress <% if(!play){ %>display-none <% } %>">
-    <div class="audios-list-item-progress-position progress-position"></div>
-    <div class="audios-list-item-progress-value progress-value"></div>
+    <div class="audios-list-item-progress-position progress-position" style="left:<%- playprogess %>%"></div>
+    <div class="audios-list-item-progress-value progress-value" style="width:<%- loadprogess %>%"></div>
 </div>

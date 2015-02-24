@@ -18,7 +18,7 @@ define([
 
     var PlayerController = Backbone.View.extend({
 
-        timers:{},
+        timers: {},
 
         events: {
             'keyup .player-controller-search__input': 'eventKeyupSearch',
@@ -102,7 +102,7 @@ define([
         next: function () {
             this.app.log('PlayerController next repeat:' + this.model.get('repeat'));
 
-            var model = this.model.getAudioModel();
+            var model = this.model.getAudioModel(this.model.get('aid'), this.model.get('owner_id'));
             this.app.collections.audios.setElement(model);
 
             //if (this.model.get('repeat')) {
@@ -111,22 +111,23 @@ define([
             //    return this;
             //}
 
-            if(this.nodes.item &&  this.nodes.item.currentTime){
+            if (this.nodes.item && this.nodes.item.currentTime) {
                 this.nodes.item.currentTime = 0;
             }
 
             var next = this.app.collections.audios.next().getElement();
             if (next) {
-                this.play(next.cid);
+                this.play(next.get('aid'), next.get('owner_id'));
             }
         },
 
         prev: function () {
-            var model = this.model.getAudioModel();
+            var model = this.model.getAudioModel(this.model.get('aid'), this.model.get('owner_id'));
             this.app.collections.audios.setElement(model);
             var prev = this.app.collections.audios.prev().getElement();
+
             if (prev) {
-                this.play(prev.cid);
+                this.play(prev.get('aid'), prev.get('owner_id'));
             }
         },
 
@@ -146,7 +147,7 @@ define([
             }
 
             var model = this.model.getAudioModel();
-            model.set({play:false});
+            model.set({play: false});
 
             if (this.nodes.item.currentTime) {
                 this.nodes.item.currentTime = 0;
@@ -201,7 +202,7 @@ define([
          * need fix it's method
          * @private
          */
-        _makeItemEvents:function(){
+        _makeItemEvents: function () {
             this.app.log('PlayerController._makeItemEvents');
 
             var self = this;
@@ -212,14 +213,18 @@ define([
             /**
              * remove and next error item
              */
-            (function(n, m){
+            (function (n, m) {
 
-                setTimeout(function(){
-                    if(n.buffered.length === 0){
+                setTimeout(function () {
+                    if (n.buffered.length === 0) {
 
                         n.remove();
-                        if(n.getAttribute('data-cid') == self.model.getAudioModel().cid){
-                            self.next();
+                        var selfmodel = self.model.getAudioModel();
+
+                        if (n.getAttribute('data-aid') == selfmodel.get('aid')
+                            && n.getAttribute('data-owner_id') == selfmodel.get('owner_id')) {
+                            console.log('NEXT', n, selfmodel);
+                            //self.next();
                         }
 
                     }
@@ -236,7 +241,7 @@ define([
             this.timers.process = setInterval(function () {
 
                 var time = self.nodes.item.currentTime;
-                var model = self.model.getAudioModel();
+                var model = self.model.getAudioModel(self.model.get('aid'), self.model.get('owner_id'));
 
                 var playprogess = time / parseInt(model.get('duration')) * 100;
                 playprogess = Math.ceil(playprogess);
@@ -245,11 +250,11 @@ define([
                     playprogess = 100;
                 }
 
-                model.set({playprogess:playprogess});
+                model.set({playprogess: playprogess});
 
             }, 1000);
 
-            var progress = function(){
+            var progress = function () {
 
                 var loadprogess = 0;
                 var ranges = [];
@@ -266,8 +271,8 @@ define([
                 }
 
                 /**
-                * BUG
-                */
+                 * BUG
+                 */
 
                 loadprogess = Math.ceil(loadprogess);
 
@@ -275,13 +280,14 @@ define([
                     loadprogess = 100;
                 }
 
-                var cid = this.getAttribute('data-cid');
-                var model = self.model.getAudioModel(cid);
+                var aid = this.getAttribute('data-aid');
+                var owner_id = this.getAttribute('data-owner_id');
+                var model = self.model.getAudioModel(aid, owner_id);
                 model.set({loadprogess:loadprogess});
 
             };
 
-            var ended = function(){
+            var ended = function () {
                 self.next();
             };
 
@@ -291,31 +297,32 @@ define([
 
         },
 
-        play: function (cid) {
+        play: function (aid, owner_id) {
 
 
-            if (cid && cid.target) {
-                cid = false;
+            if (aid && aid.target) {
+                aid = false;
             }
-            var self = this;
 
+            var self = this;
             var model;
 
-            if (cid) {
-                model = this.model.getAudioModel(cid);
+            if (aid && owner_id) {
+                model = this.model.getAudioModel(aid, owner_id);
             } else {
                 model = this.model.getAudioModel();
-                cid = model.cid;
+                aid = model.get('aid');
+                owner_id = model.get('owner_id');
             }
 
 
-            this.app.log('PlayerController play:' + cid);
+            this.app.log('PlayerController play aid:' + aid + ' | owner_id:' + owner_id);
             model.set({play: true});
 
 
             this.app.collections.audios.setElement(model);
 
-            var item = document.getElementById('audio-preload-' + cid);
+            var item = document.getElementById('audio-preload-' + aid + '-' + owner_id);
 
             if (!this.nodes.cache) {
                 this.nodes.cache = this.app.views.index.nodes.cache;
@@ -328,7 +335,7 @@ define([
              */
             if ((this.nodes.item && !item) || (this.nodes.item && item && item !== this.nodes.item)) {
 
-                this.app.log('PlayerController play:' + cid + ', previous item.currentTime = 0');
+                this.app.log('PlayerController play:' + aid + ', previous item.currentTime = 0');
 
                 this.nodes.item.pause();
                 if (this.nodes.item.currentTime) {
@@ -348,7 +355,7 @@ define([
             if (item) {
 
                 this.nodes.item = item;
-                this.model.set({acid: cid});
+                this.model.set({aid: parseInt(aid), owner_id: parseInt(owner_id)});
                 this.nodes.item.play();
 
                 item.addEventListener('ended', function () {
@@ -360,14 +367,15 @@ define([
             if (!item) {
 
                 item = document.createElement('audio');
-                item.id = 'audio-preload-' + cid;
+                item.id = 'audio-preload-' + aid + '-' + owner_id;
                 item.setAttribute('src', model.get('url').split('?')[0]);
-                item.setAttribute('data-cid', cid);
+                item.setAttribute('data-aid', aid);
+                item.setAttribute('data-owner_id', owner_id);
 
                 this.nodes.cache.appendChild(item);
                 this.nodes.item = item;
                 model.views.item = item;
-                this.model.set({acid: cid});
+                this.model.set({aid: parseInt(aid), owner_id: parseInt(owner_id)});
 
                 item.play();
 
@@ -377,15 +385,17 @@ define([
                  */
                 this._makeItemEvents();
             }
-
-            var previousCid = this.model.previous('acid');
+            //
+            var previousAid = this.model.previous('aid');
+            var previousOwner_id = this.model.previous('owner_id');
 
             /**
              * set play false model
              */
-            if (previousCid && previousCid !== cid) {
-                var previousModel = this.model.getAudioModel(previousCid);
+            if (previousAid && previousAid !== aid) {
+                var previousModel = this.model.getAudioModel(previousAid, previousOwner_id);
                 previousModel.set({play: false});
+                this.app.log('PlayerController previous set play:false, aid:' + previousAid + ' | owner_id:' + previousOwner_id);
             }
 
         },

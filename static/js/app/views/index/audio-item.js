@@ -53,7 +53,7 @@ define([
 
         changePlay:function(){
 
-            this.app.log('AudioItemView.changePlay: ' + this.model.get('play') + ', cid:' + this.model.cid);
+            this.app.log('AudioItemView.changePlay: ' + this.model.get('play') + ', aid:' + this.model.get('aid') + '| owner_id:' + this.model.get('owner_id'));
 
             if(this.model.get('play')){
                 this.nodes.$progress.removeClass('display-none');
@@ -92,8 +92,9 @@ define([
         },
 
         eventClickPlay:function(){
-            var cid = this.model.cid;
-            this.app.playercontroller.play(cid);
+            var aid = this.model.get('aid');
+            var owner_id = this.model.get('owner_id');
+            this.app.playercontroller.play(aid, owner_id);
         },
 
         eventClickPause:function(){
@@ -103,6 +104,7 @@ define([
         render:function(){
 
             var data = this.model.toJSON();
+
             var html = _.template(indexTpl)(data);
             this.el.innerHTML = html;
 

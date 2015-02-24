@@ -10,7 +10,9 @@ define([
              Backbone) {
     var AudioItemModel = Backbone.Model.extend({
         defaults:{
-            play:false
+            play:false,
+            loadprogess:0,
+            playprogess:0
         }
     });
     return AudioItemModel;

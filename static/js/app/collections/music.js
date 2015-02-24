@@ -55,6 +55,7 @@ define([
                     var items = r.response.slice(1, r.response.length);
 
                     items = _.map(items, function(item){
+
                         var model = self.findWhere({aid:item.aid, owner_id:item.owner_id});
                         if(!model){
                             return item;
@@ -63,6 +64,7 @@ define([
                         data = _.extend(item, model.toJSON());
 
                         /**
+                         * TODO
                          * FIX model to view link
                          * and node
                          */

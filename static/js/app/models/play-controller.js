@@ -17,17 +17,32 @@ define([
 
         initialize: function () {
 
-            this.bind('change:acid', this.changeAcid, this);
+            this.bind('change:aid', this.changeAcid, this);
             this.bind('change:setBroadcast', this.setBroadcast, this);
         },
 
-        getAudioModel: function (cid) {
+        getAudioModel: function (aid, owner_id) {
 
-            if (!cid) {
-                cid = this.get('acid');
+            if (!aid) {
+                aid = this.get('aid');
             }
 
-            var model = this.app.collections.audios.get(cid);
+            if(!owner_id){
+                aid = this.get('owner_id');
+            }
+
+            /**
+             * bad conde
+             */
+            if(!owner_id){
+
+            }
+
+            aid = parseInt(aid);
+            owner_id = parseInt(owner_id);
+
+            var model = this.app.collections.audios.findWhere({aid:aid, owner_id:owner_id});
+
             if (!model) {
                 model = _.first(this.app.collections.audios.models);
 
@@ -42,7 +57,8 @@ define([
             var setBroadcast = this.get('setBroadcast');
 
             if (setBroadcast) {
-                data.audio = this.app.attributes.mid + '_' + this.getAudioModel().get('aid');
+                var model = this.getAudioModel();
+                data.audio = model.get('owner_id') + '_' + model.get('aid');
             }
 
             VK.Api.call('audio.setBroadcast', data, function (r) {
