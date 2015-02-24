@@ -72,19 +72,22 @@ define([
 
             var self = this;
             var itemsMerge;
-
-            itemsMerge = [];
+            var playercontroller = self.app.models.playercontroller;
+            var currentAid = parseInt(playercontroller.get('aid'));
 
             itemsMerge = _.map(items, function(item){
 
                 var data;
                 var model = self.findWhere({aid:item.aid, owner_id:item.owner_id});
 
+                if(currentAid && currentAid !== item.aid){
+                    item.play = false;
+                }
+
                 if(!model){
                     return item;
                 }
 
-                //data = $.extend(true, {}, item, model.toJSON());
                 data = _.extend({}, item, model.toJSON());
 
                 return data;
