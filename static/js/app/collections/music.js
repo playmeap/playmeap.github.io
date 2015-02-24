@@ -72,15 +72,20 @@ define([
 
             var self = this;
             var itemsMerge;
+
+            itemsMerge = [];
+
             itemsMerge = _.map(items, function(item){
 
                 var data;
                 var model = self.findWhere({aid:item.aid, owner_id:item.owner_id});
+
                 if(!model){
                     return item;
                 }
 
-                data = $.extend(true, {}, item, model.toJSON());
+                //data = $.extend(true, {}, item, model.toJSON());
+                data = _.extend({}, item, model.toJSON());
 
                 return data;
 
@@ -96,10 +101,15 @@ define([
             var items;
             var data = this.collectionModel.toJSON();
             var itemsCache = this.getCacheCollection(data);
+            var previousAttributes = this.collectionModel.previousAttributes();
+
+            if(!_.isEmpty(previousAttributes)){
+                var previousItems = this.toJSON();
+                this.saveCacheCollection(previousItems, previousAttributes);
+            }
 
             if(itemsCache){
                 items = this.mergeItems(itemsCache);
-
                 setTimeout(function(){
                     self.reset(items);
                 }, 0);
@@ -114,10 +124,6 @@ define([
                     var items = r.response.slice(1, r.response.length);
                     items = self.mergeItems(items);
                     self.reset(items);
-                    delete data.callback;
-                    delete data.access_token;
-
-                    self.saveCacheCollection(items, data);
 
                 } else {
                     alert(r.error.error_msg);

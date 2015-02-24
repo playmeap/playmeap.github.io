@@ -59,7 +59,7 @@ define([
 
         changePlay:function(){
 
-            this.app.log('AudioItemView.changePlay: ' + this.model.get('play') + ', aid:' + this.model.get('aid') + '| owner_id:' + this.model.get('owner_id'));
+            this.app.log('AudioItemView.changePlay: ' + this.model.get('play') + ', aid:' + this.model.get('aid') + '| owner_id:' + this.model.get('owner_id') + ' CID:' + this.model.cid);
 
             if(this.model.get('play')){
                 this.nodes.$progress.removeClass('display-none');
@@ -117,6 +117,7 @@ define([
 
             var html;
             var data = this.model.toJSON();
+
             data.plus = false;
 
             if(parseInt(data.owner_id) !== parseInt(this.app.attributes.mid)){
