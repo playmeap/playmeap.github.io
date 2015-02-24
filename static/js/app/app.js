@@ -17,6 +17,21 @@ define([
     */
     var DefaultRemove = Backbone.View.prototype.remove;
     Backbone.View.prototype.remove = function () {
+
+        if(this.nodes){
+            for(var m in this.nodes){
+
+                if(m.indexOf('$') >= 0){
+                    this.nodes[m].remove();
+                }
+
+                //if(m === 'item'){
+                //    //this.nodes[m].removeEventListener('ended');
+                //    //this.nodes[m].removeEventListener('progress');
+                //}
+            }
+        }
+
         if (this.children) {
             for (var n in this.children) {
                 if (this.children[n].remove) {

@@ -5,13 +5,17 @@
         <button class="audios-list-item-control player-controller-control fa fa-play audios-list-item-control-play <% if(play){ %>display-none <% } %>"></button>
     </div>
 
-    <div class="audios-list-item-controls-second">
 
-    </div>
 </div>
 
 <div class="audios-list-item__title">
     <%- title %>
+</div>
+
+<div class="audios-list-item-controls-second">
+    <% if(plus){ %>
+    <button class="audios-list-item-control player-controller-control fa fa-plus audios-list-item-control-plus"></button>
+    <% } %>
 </div>
 
 

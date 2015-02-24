@@ -19,6 +19,7 @@ define([
         events:{
             'click .audios-list-item-control-play':'eventClickPlay',
             'click .audios-list-item-control-pause':'eventClickPause',
+            'click .audios-list-item-control-plus':'eventClickPlus',
             'change input[name="duration-set"]':'eventSetTime',
             'click .audios-list-item-progress':'eventClickSetTime'
         },
@@ -32,6 +33,11 @@ define([
 
             if(!this.model.views){
                 this.model.views = {};
+            }
+
+            if(this.model.get('itemId')){
+                this.model.views.item = document.getElementById(this.model.get('itemId'));
+                this.nodes.item = this.model.views.item;
             }
 
             this.model.views.list = this;
@@ -101,11 +107,28 @@ define([
             this.app.playercontroller.pause();
         },
 
+        eventClickPlus:function(){
+
+            this.model.audioAdd();
+
+        },
+
         render:function(){
 
+            var html;
             var data = this.model.toJSON();
+            data.plus = false;
 
-            var html = _.template(indexTpl)(data);
+            if(parseInt(data.owner_id) !== parseInt(this.app.attributes.mid)){
+                data.plus = true;
+            }
+
+            if(data.title.length >= 50){
+                data.title = data.title.split(',').join(' ').split('.').join(' ');
+            }
+
+            html = _.template(indexTpl)(data);
+
             this.el.innerHTML = html;
 
             this.el.id = 'audio-item_' + data.aid;

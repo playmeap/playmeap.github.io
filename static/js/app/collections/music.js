@@ -13,10 +13,35 @@ define([
         model: AudioItemModelClass,
         url: 'audio.get',
 
+        cache:[],
+
         initialize: function () {
             this.collectionModel = new (Backbone.Model.extend());
             this.collectionModel.bind('change', this.fetch, this);
             this.setElement(this.at(0));
+        },
+
+        saveCacheCollection:function(items, data){
+            if(!this.getCacheCollection(data)){
+                this.cache.push({items:items, data:data});
+            }
+        },
+
+        getCacheCollection:function(data){
+
+            var items;
+            var itemsCollection = _.filter(this.cache, function(collectionData){
+
+                return _.isEqual(collectionData.data, data);
+
+            }, this);
+
+            itemsCollection = _.first(itemsCollection);
+            if(itemsCollection){
+                items = itemsCollection.items;
+            }
+
+            return items;
         },
 
         searchByName: function (name) {
@@ -43,36 +68,56 @@ define([
             return items;
         },
 
+        mergeItems:function(items){
+
+            var self = this;
+            var itemsMerge;
+            itemsMerge = _.map(items, function(item){
+
+                var data;
+                var model = self.findWhere({aid:item.aid, owner_id:item.owner_id});
+                if(!model){
+                    return item;
+                }
+
+                data = $.extend(true, {}, item, model.toJSON());
+
+                return data;
+
+            }, this);
+
+            return itemsMerge;
+
+        },
+
         fetch: function () {
 
             var self = this;
+            var items;
             var data = this.collectionModel.toJSON();
+            var itemsCache = this.getCacheCollection(data);
+
+            if(itemsCache){
+                items = this.mergeItems(itemsCache);
+
+                setTimeout(function(){
+                    self.reset(items);
+                }, 0);
+                return this;
+            }
+
 
             VK.Api.call(this.url, data, function (r) {
 
                 if (r && r.response) {
 
                     var items = r.response.slice(1, r.response.length);
-
-                    items = _.map(items, function(item){
-
-                        var model = self.findWhere({aid:item.aid, owner_id:item.owner_id});
-                        if(!model){
-                            return item;
-                        }
-
-                        data = _.extend(item, model.toJSON());
-
-                        /**
-                         * TODO
-                         * FIX model to view link
-                         * and node
-                         */
-                        return data;
-
-                    }, this);
-
+                    items = self.mergeItems(items);
                     self.reset(items);
+                    delete data.callback;
+                    delete data.access_token;
+
+                    self.saveCacheCollection(items, data);
 
                 } else {
                     alert(r.error.error_msg);

@@ -49,7 +49,12 @@
 .albums-list-view,
 .friends-list-view,
 .audios-list-view {
+  min-height: 100px;
   padding-left: 0;
+
+  &.preload:before {
+    background-position: center 10px;
+  }
 }
 
 .friends-list-view {
@@ -72,6 +77,12 @@
   display: block;
   border-bottom: 1px dashed $color8;
   padding: 9px 0;
+
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
 }
 
 .albums-list-item {
@@ -125,10 +136,20 @@
 .player-controller-player__title {
 }
 
+.audios-list-item-progress {
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  margin-top: 20px;
+}
+
 .progress {
   position: relative;
   clear: left;
-  width: 100%;
+  width: 96%;
+  left: 3%;
   height: 6px;
   background: #2f2f2f;
   cursor: pointer;
@@ -145,9 +166,9 @@
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   border-radius: 8px;
-  -webkit-transition: left 0.1s ease;
-  -o-transition: left 0.1s ease;
-  transition: left 0.1s ease;
+  -webkit-transition: left 0.05s ease;
+  -o-transition: left 0.05s ease;
+  transition: left 0.05s ease;
 }
 
 .progress-value {
@@ -169,12 +190,30 @@
   float: left;
 }
 
-#login_button{
+#login_button {
   background: $color6;
   height: $height-input-big;
   line-height: $height-input-big;
   font-weight: bold;
   font-size: 18px;
-  border:none;
+  border: none;
   padding: 0 50px;
+}
+
+.audios-list-item__title {
+  float: left;
+}
+
+.audios-list-item-controls-second {
+  float: right;
+
+  .audios-list-item-control {
+    &:before {
+      color: $color8;
+    }
+    &:hover:before {
+      color: $color9;
+    }
+  }
+
 }

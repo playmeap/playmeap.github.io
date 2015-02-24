@@ -223,8 +223,8 @@ define([
 
                         if (n.getAttribute('data-aid') == selfmodel.get('aid')
                             && n.getAttribute('data-owner_id') == selfmodel.get('owner_id')) {
-                            console.log('NEXT', n, selfmodel);
-                            //self.next();
+                            //console.log('NEXT', n, selfmodel);
+                            self.next();
                         }
 
                     }
@@ -368,13 +368,17 @@ define([
 
                 item = document.createElement('audio');
                 item.id = 'audio-preload-' + aid + '-' + owner_id;
-                item.setAttribute('src', model.get('url').split('?')[0]);
+                //item.setAttribute('src', model.get('url').split('?')[0]);
+                item.setAttribute('src', model.get('url'));
                 item.setAttribute('data-aid', aid);
                 item.setAttribute('data-owner_id', owner_id);
 
                 this.nodes.cache.appendChild(item);
                 this.nodes.item = item;
                 model.views.item = item;
+
+                model.set({itemId:item.id});
+
                 this.model.set({aid: parseInt(aid), owner_id: parseInt(owner_id)});
 
                 item.play();
