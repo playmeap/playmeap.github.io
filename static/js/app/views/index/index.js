@@ -9,6 +9,7 @@ define([
     'app/views/index/albums',
     'app/views/index/friends',
     'app/views/index/search',
+    'app/views/index/user-profile',
     'app/views/play-controller',
     'text!templates/index/index.tpl'
 ], function ($,
@@ -18,6 +19,7 @@ define([
              AlbumsViewClass,
              FriendsViewClass,
              SearchViewClass,
+             UserProfileViewClass,
              PlayerControllerClass,
              indexTpl) {
 
@@ -49,6 +51,11 @@ define([
             this.children.search= new SearchViewClass({
                 parent:this,
                 wrap:'#js_search-list'
+            });
+
+            this.children.userprofile = new UserProfileViewClass({
+                parent:this,
+                wrap:'#js_user-profile'
             });
 
         },

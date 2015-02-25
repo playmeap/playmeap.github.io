@@ -104,17 +104,17 @@ define([
          */
         postLoad:function(data){
 
-            //var self = this;
-            //VK.Api.call(this.url, data, function (r) {
-            //
-            //    if (r && r.response) {
-            //
-            //        var items = r.response.slice(1, r.response.length);
-            //        items = self.mergeItems(items);
-            //        self.set(items);
-            //
-            //    }
-            //});
+            var self = this;
+            VK.Api.call(this.url, data, function (r) {
+
+                if (r && r.response) {
+
+                    var items = r.response.slice(1, r.response.length);
+                    items = self.mergeItems(items);
+                    self.set(items);
+                    self.app.log('MusicCollection.postLoad load set items. ' + self.length);
+                }
+            });
 
         },
 
@@ -136,7 +136,7 @@ define([
                 setTimeout(function(){
                     self.reset(items);
                     self.postLoad(data);
-                    self.app.log('MusicCollection.fetch load cache items');
+                    self.app.log('MusicCollection.fetch load cache items. ' + self.length);
                 }, 0);
                 return this;
             }

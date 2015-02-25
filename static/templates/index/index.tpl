@@ -1,6 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-4">
+            <div id="js_user-profile"></div>
             <div id="js_search-list" class="search-list"></div>
             <div id="js_audios-list" class="audios-list"></div>
         </div>

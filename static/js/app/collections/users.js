@@ -13,7 +13,7 @@ define([
 
             this.collectionModel = new (Backbone.Model.extend());
             this.collectionModel.set({
-                fields:['nickname', 'sex', 'bdate', 'photo_50', 'online', 'status', 'can_see_audio']
+                fields:['nickname', 'sex', 'bdate', 'photo_50', 'online', 'status', 'can_see_audio', 'online']
             }, {silent:true});
 
             this.collectionModel.bind('change', this.fetch, this);

@@ -44,7 +44,7 @@ define([
             }
 
             this.children[item.cid] = view;
-            this.$el.prepend(view.render().el);
+            this.$el.append(view.render().el);
 
         },
 
@@ -61,17 +61,19 @@ define([
                 delete this.children[id];
             }, this);
 
-            _.each(this.collection.models, function(model){
+            _.each(this.collection.models, this.addItem, this);
 
-                var view = new AudioItemViewClass({
-                    parent:self,
-                    model:model
-                });
-
-                this.children[model.cid] = view;
-                this.$el.append(view.render().el);
-
-            }, this);
+            //_.each(this.collection.models, function(model){
+            //
+            //    var view = new AudioItemViewClass({
+            //        parent:self,
+            //        model:model
+            //    });
+            //
+            //    this.children[model.cid] = view;
+            //    this.$el.append(view.render().el);
+            //
+            //}, this);
         }
 
     });
