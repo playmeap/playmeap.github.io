@@ -58,8 +58,6 @@ define([
 
             this.$el.removeClass('preload');
 
-            console.log('RENDER USER PROFILE', data);
-
             return this;
         }
 
