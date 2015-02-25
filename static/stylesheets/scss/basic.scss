@@ -10,6 +10,7 @@ body {
   min-width: 20px;
 
   &:before {
+    top:0;
     content: "";
     display: block;
     min-width: 20px;

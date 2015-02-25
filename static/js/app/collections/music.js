@@ -98,6 +98,26 @@ define([
 
         },
 
+        /**
+         * load new items after collection reset (cache items)
+         * @param data
+         */
+        postLoad:function(data){
+
+            //var self = this;
+            //VK.Api.call(this.url, data, function (r) {
+            //
+            //    if (r && r.response) {
+            //
+            //        var items = r.response.slice(1, r.response.length);
+            //        items = self.mergeItems(items);
+            //        self.set(items);
+            //
+            //    }
+            //});
+
+        },
+
         fetch: function () {
 
             var self = this;
@@ -115,6 +135,8 @@ define([
                 items = this.mergeItems(itemsCache);
                 setTimeout(function(){
                     self.reset(items);
+                    self.postLoad(data);
+                    self.app.log('MusicCollection.fetch load cache items');
                 }, 0);
                 return this;
             }

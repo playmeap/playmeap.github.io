@@ -15,6 +15,13 @@
 <div class="audios-list-item-controls-second">
     <% if(plus){ %>
     <button class="audios-list-item-control player-controller-control fa fa-plus audios-list-item-control-plus"></button>
+    <% } else { %>
+    <button class="audios-list-item-control player-controller-control fa fa-minus audios-list-item-control-minus"></button>
+
+    <div class="audios-list-item-controls-second-remove display-none">
+        <button class="audios-list-item-control player-controller-control audios-list-item-control-remove">Удалить</button>
+        <button class="audios-list-item-control player-controller-control audios-list-item-control-remove-cancel">Отмена</button>
+    </div>
     <% } %>
 </div>
 

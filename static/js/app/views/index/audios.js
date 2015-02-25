@@ -21,7 +21,7 @@ define([
             this.collection = this.app.collections.audios;
             this.collection.bind('reset', this.render, this);
             //this.collection.bind('fake:reset', this.removePreload, this);
-            //this.collection.bind('add', this.addItem, this);
+            this.collection.bind('add', this.addItem, this);
 
             this.collection.collectionModel.bind('change', this.changeCollectionModel, this);
             this.render();
@@ -32,15 +32,21 @@ define([
             this.$el.addClass('preload');
         },
 
-        //addItem:function(item){
-        //    var view = new AudioItemViewClass({
-        //        parent:self,
-        //        model:item
-        //    });
-        //
-        //    this.children[item.cid] = view;
-        //    this.$el.append(view.render().el);
-        //},
+        addItem:function(item){
+
+            var view = new AudioItemViewClass({
+                parent:self,
+                model:item
+            });
+
+            if(this.children[item.cid]){
+                this.children[item.cid].remove();
+            }
+
+            this.children[item.cid] = view;
+            this.$el.prepend(view.render().el);
+
+        },
 
         render:function(){
 

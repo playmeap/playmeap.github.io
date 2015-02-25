@@ -20,6 +20,9 @@ define([
             'click .audios-list-item-control-play':'eventClickPlay',
             'click .audios-list-item-control-pause':'eventClickPause',
             'click .audios-list-item-control-plus':'eventClickPlus',
+            'click .audios-list-item-control-minus':'eventClickMinus',
+            'click .audios-list-item-control-remove':'eventClickRemove',
+            'click .audios-list-item-control-remove-cancel':'eventClickRemoveCancel',
             'change input[name="duration-set"]':'eventSetTime',
             'click .audios-list-item-progress':'eventClickSetTime'
         },
@@ -45,6 +48,8 @@ define([
             this.model.bind('change:playprogess', this.changePlayProgress, this);
             this.model.bind('change:loadprogess', this.changeLoadProgress, this);
 
+            this.model.bind('audio.delete', this.remove, this);
+            this.model.bind('audio.add', this.addcomplete, this);
         },
 
         changePlayProgress:function(){
@@ -109,8 +114,28 @@ define([
 
         eventClickPlus:function(){
 
+            this.$el.addClass('preload');
             this.model.audioAdd();
 
+        },
+
+        eventClickMinus:function(){
+            this.nodes.controls.$remove.addClass('display-none');
+            this.nodes.controls.$removeBlock.removeClass('display-none');
+        },
+
+        eventClickRemove:function(){
+            this.$el.addClass('preload');
+            this.model.audioDelete();
+        },
+
+        eventClickRemoveCancel:function(){
+            this.nodes.controls.$remove.removeClass('display-none');
+            this.nodes.controls.$removeBlock.addClass('display-none');
+        },
+
+        addcomplete:function(){
+            this.$el.removeClass('preload');
         },
 
         render:function(){
@@ -136,9 +161,11 @@ define([
 
             this.nodes.controls.$play = this.$el.find('.audios-list-item-control-play');
             this.nodes.controls.$pause = this.$el.find('.audios-list-item-control-pause');
+            this.nodes.controls.$remove = this.$el.find('.audios-list-item-control-minus');
             this.nodes.$progress = this.$el.find('.audios-list-item-progress');
             this.nodes.$progressPosition = this.$el.find('.audios-list-item-progress-position');
             this.nodes.$progressValue = this.$el.find('.audios-list-item-progress-value');
+            this.nodes.controls.$removeBlock = this.$el.find('.audios-list-item-controls-second-remove');
 
             return this;
         }
