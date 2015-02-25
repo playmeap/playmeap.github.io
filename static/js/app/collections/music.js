@@ -68,27 +68,34 @@ define([
             return items;
         },
 
-        mergeItems:function(items){
+        mergeItems:function(items, itemsOld){
 
             var self = this;
             var itemsMerge;
             var playercontroller = self.app.models.playercontroller;
             var currentAid = parseInt(playercontroller.get('aid'));
 
+            if(!itemsOld){
+                itemsOld = this.models;
+            }
+
             itemsMerge = _.map(items, function(item){
 
                 var data;
-                var model = self.findWhere({aid:item.aid, owner_id:item.owner_id});
+                var model = _.findWhere(itemsOld, {aid:item.aid, owner_id:item.owner_id});
 
-                if(currentAid && currentAid !== item.aid){
-                    item.play = false;
-                }
 
                 if(!model){
                     return item;
                 }
 
-                data = _.extend({}, item, model.toJSON());
+                data = $.extend(true, model.toJSON(), item);
+
+                if(currentAid && currentAid == data.aid){
+                    data.play = true;
+                }else{
+                    data.play = false;
+                }
 
                 return data;
 
@@ -105,6 +112,10 @@ define([
         postLoad:function(data){
 
             var self = this;
+
+            var playercontroller = self.app.models.playercontroller;
+            var currentAid = parseInt(playercontroller.get('aid'));
+
             VK.Api.call(this.url, data, function (r) {
 
                 if (r && r.response) {
@@ -122,9 +133,15 @@ define([
                         var model = self.findWhere({aid:item.aid, owner_id:item.owner_id});
                         if(model){
                             data = model.toJSON();
-                            dataNew = $.extend(true, data, item);
                             if(data.play){
-                                dataNew.play = true;
+                                data.play = false;
+                            }
+                            data = $.extend(true, data, item);
+
+                            if(currentAid && currentAid == data.aid){
+                                data.play = true;
+                            }else{
+                                data.play = false;
                             }
 
                             model.set(data);
@@ -135,6 +152,20 @@ define([
                     self.app.log('MusicCollection.postLoad load set items. ' + self.length);
                 }
             });
+
+        },
+
+        getUserCollection:function(owner_id, album_id, callback, context){
+
+            if(!owner_id){
+                owner_id = this.app.attributes.mid;
+            }
+
+            if(!context){
+                context = this;
+            }
+
+
 
         },
 
