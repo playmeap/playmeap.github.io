@@ -49,8 +49,11 @@
 .albums-list-view,
 .friends-list-view,
 .audios-list-view {
-  min-height: 100px;
+
+  min-height: 20px;
   padding-left: 0;
+  margin-top: 15px;
+  margin-bottom: 15px;
 
   &.preload:before {
     background-position: center 10px;
@@ -96,13 +99,13 @@
 }
 
 .friends-list-view_search {
-  margin-top: 0;
-  margin-bottom: 15px;
+  //  margin-top: 0;
+  //  margin-bottom: 15px;
 }
 
 .audios-list-view_search {
-  margin-top: 0;
-  margin-bottom: 15px;
+  //  margin-top: 0;
+  //  margin-bottom: 15px;
 }
 
 .friends-list-item-link {
@@ -227,8 +230,6 @@
 }
 
 .userprofile-list-view-head-image {
-//  width: 30px;
-//  height: 30px;
   overflow: hidden;
 }
 
@@ -243,7 +244,7 @@
 
 .userprofile-list-view-head-status {
   display: block;
-  font-size: 10px;
+  font-size: 11px;
   font-style: italic;
   margin: 3px 0;
 }
