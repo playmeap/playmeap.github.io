@@ -291,8 +291,8 @@ define([
                 self.next();
             };
 
-            item.addEventListener('ended', ended);
-            item.addEventListener('progress', progress);
+            //item.addEventListener('ended', ended);
+            //item.addEventListener('progress', progress);
 
 
         },
@@ -387,7 +387,7 @@ define([
                 /**
                  * todo
                  */
-                this._makeItemEvents();
+                //this._makeItemEvents();
             }
             //
             var previousAid = this.model.previous('aid');

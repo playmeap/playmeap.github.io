@@ -35,7 +35,7 @@ define([
              * bad conde
              */
             if(!owner_id){
-
+                owner_id = this.app.attributes.mid;
             }
 
             aid = parseInt(aid);
@@ -43,9 +43,9 @@ define([
 
             var model = this.app.collections.audios.findWhere({aid:aid, owner_id:owner_id});
 
+            console.log('a', model);
             if (!model) {
                 model = _.first(this.app.collections.audios.models);
-
             }
 
             return model;

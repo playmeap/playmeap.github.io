@@ -25,7 +25,7 @@ define([
         render: function () {
             this.app.log('PlayControllerPlayer.render');
 
-            var modelAudio = this.parent.model.getAudioModel();
+            var modelAudio = this.parent.model.getAudioModel(this.parent.model.get('aid'), this.parent.model.get('owner_id'));
             var modelController = this.parent.model;
 
             var data = _.extend({}, modelController.toJSON(), modelAudio.toJSON());
