@@ -93,6 +93,10 @@ define([
                 this.app.views.index.renderView(this.app.views.indexPage);
             }
 
+            //this.app.collections.audios.collectionModel.clear({silent:true});
+            //this.app.collections.albums.collectionModel.clear({silent:true});
+            //this.app.collections.users.collectionModel.clear({silent:true});
+
             this.app.collections.audios.collectionModel.set({owner_id:id, album_id:''});
             this.app.collections.albums.collectionModel.set({owner_id:this.app.attributes.mid});
             this.app.collections.users.collectionModel.set({user_id:this.app.attributes.mid});
@@ -109,6 +113,10 @@ define([
                 this.app.views.indexPage = new IndexPageViewClass();
                 this.app.views.index.renderView(this.app.views.indexPage);
             }
+
+            //this.app.collections.audios.collectionModel.clear({silent:true});
+            //this.app.collections.albums.collectionModel.clear({silent:true});
+            //this.app.collections.users.collectionModel.clear({silent:true});
 
             this.app.collections.audios.collectionModel.set({owner_id:user_id, album_id:album_id});
             this.app.collections.albums.collectionModel.set({owner_id:this.app.attributes.mid});

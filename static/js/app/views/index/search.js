@@ -18,13 +18,22 @@ define([
         tagName: 'div',
         className: 'search-list-view',
 
+        events:{
+            'click .friends-list-item':'eventClickToFriend'
+        },
+
         initialize: function (options) {
             this.parent = options.parent;
             this.wrap = options.wrap;
             this.children = [];
+            this.nodes = {};
 
             this.controllerModel = this.app.models.playercontroller;
             this.controllerModel.bind('change:searchName', this.render, this);
+        },
+
+        eventClickToFriend:function(){
+            this.nodes.$nodeAudios.html('');
         },
 
         render: function () {
@@ -72,6 +81,7 @@ define([
 
                     if(num == itemsFriends.length -1){
                         this.$el.append($nodeFriends);
+                        this.nodes.$nodeFriends = $nodeFriends;
                     }
 
                 }, this);
@@ -91,6 +101,7 @@ define([
 
                     if(num == itemsAudio.length -1){
                         this.$el.append($nodeAudios);
+                        this.nodes.$nodeAudios = $nodeAudios;
                     }
 
                 }, this);

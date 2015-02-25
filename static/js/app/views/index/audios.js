@@ -63,17 +63,6 @@ define([
 
             _.each(this.collection.models, this.addItem, this);
 
-            //_.each(this.collection.models, function(model){
-            //
-            //    var view = new AudioItemViewClass({
-            //        parent:self,
-            //        model:model
-            //    });
-            //
-            //    this.children[model.cid] = view;
-            //    this.$el.append(view.render().el);
-            //
-            //}, this);
         }
 
     });
