@@ -208,8 +208,13 @@
   padding: 0 50px;
 }
 
-.audios-list-item__title {
+.audios-list-item-title {
   float: left;
+  max-width: 60%;
+}
+
+.audios-list-item-title__artist {
+  font-weight: bold;
 }
 
 .audios-list-item-controls-second {
@@ -250,7 +255,7 @@
   margin: 3px 0;
 }
 
-.player-controller-controls-volume-wrap{
+.player-controller-controls-volume-wrap {
 
   margin-left: 5px;
   margin-right: 5px;
@@ -262,20 +267,21 @@
   height: 8px;
   background: #2f2f2f;
   cursor: pointer;
-  width:100px;
+  width: 100px;
   margin-bottom: 8px;
 
   @include border-radius(2px);
 
 }
+
 .player-controller-controls-volume {
   background: #c9c9c9;
   width: 92%;
-  left:4%;
+  left: 4%;
   height: 4px;
   z-index: 1;
   position: absolute;
-  bottom:2px;
+  bottom: 2px;
 
   @include border-radius(3px);
 }
@@ -309,7 +315,7 @@
 
 }
 
-.app-header-title__link{
+.app-header-title__link {
   font-size: 12px;
   margin-top: 5px;
   display: block;

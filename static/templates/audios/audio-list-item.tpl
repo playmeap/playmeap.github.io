@@ -8,8 +8,9 @@
 
 </div>
 
-<div class="audios-list-item__title">
-    <%- title %>
+<div class="audios-list-item-title">
+    <span class="audios-list-item-title__artist"><%- artist %></span> ―
+    <span class="audios-list-item-title__title"><%- title %></span>
 </div>
 
 <div class="audios-list-item-controls-second">
