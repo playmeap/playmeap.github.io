@@ -3,7 +3,7 @@
         <div class="row">
             <h1 class="col-md-3 app-header-title">
                 <img src="static/images/logo-small.png" alt="playMe ap logo"/>
-                playMe ap
+                playMe ap <a class="app-header-title__link" href="https://vk.com/playmeap" target="_blank">группа в контакте</a>
             </h1>
             <div class="col-md-6 player-controller-player">
 
