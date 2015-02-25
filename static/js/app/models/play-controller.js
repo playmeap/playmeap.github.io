@@ -43,7 +43,6 @@ define([
 
             var model = this.app.collections.audios.findWhere({aid:aid, owner_id:owner_id});
 
-            console.log('a', model);
             if (!model) {
                 model = _.first(this.app.collections.audios.models);
             }
@@ -57,7 +56,8 @@ define([
             var setBroadcast = this.get('setBroadcast');
 
             if (setBroadcast) {
-                var model = this.getAudioModel();
+
+                var model = this.getAudioModel(this.get('aid'), this.get('owner_id'));
                 data.audio = model.get('owner_id') + '_' + model.get('aid');
             }
 

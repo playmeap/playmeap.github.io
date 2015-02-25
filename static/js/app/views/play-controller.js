@@ -189,10 +189,10 @@ define([
              * set play false model
              */
 
-                //if(previousCid && previousCid !== cid){
-                //var previousModel = this.model.getAudioModel(previousCid);
-                //previousModel.set({play:false});
-                //}
+            //if(previousCid && previousCid !== cid){
+            //var previousModel = this.model.getAudioModel(previousCid);
+            //previousModel.set({play:false});
+            //}
 
             model.set({play: false});
 
@@ -223,7 +223,9 @@ define([
 
                         if (n.getAttribute('data-aid') == selfmodel.get('aid')
                             && n.getAttribute('data-owner_id') == selfmodel.get('owner_id')) {
-                            //console.log('NEXT', n, selfmodel);
+                            /**
+                             * TODO need create reload method
+                             */
                             self.next();
                         }
 
@@ -291,8 +293,8 @@ define([
                 self.next();
             };
 
-            //item.addEventListener('ended', ended);
-            //item.addEventListener('progress', progress);
+            item.addEventListener('ended', ended);
+            item.addEventListener('progress', progress);
 
 
         },
@@ -387,7 +389,7 @@ define([
                 /**
                  * todo
                  */
-                //this._makeItemEvents();
+                this._makeItemEvents();
             }
             //
             var previousAid = this.model.previous('aid');
