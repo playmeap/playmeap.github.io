@@ -25,6 +25,12 @@
                 <button class="player-controller-control player-controller-control__stop fa fa-stop"></button>
                 <button class="player-controller-control player-controller-control__repeat fa fa-repeat"></button>
                 <button class="player-controller-control player-controller-control__bullhorn fa fa-bullhorn"></button>
+
+                <div class="player-controller-controls-volume-wrap">
+                    <div class="player-controller-controls-volume">
+                        <span class="player-controller-controls-volume__value" style="left:50%"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

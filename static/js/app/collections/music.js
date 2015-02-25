@@ -109,9 +109,29 @@ define([
 
                 if (r && r.response) {
 
+                    /**
+                     * TODO FIX ERROR
+                     * @type {Array.<T>|string|Blob|*}
+                     */
                     var items = r.response.slice(1, r.response.length);
                     items = self.mergeItems(items);
-                    self.set(items);
+
+                    _.each(items, function(item){
+
+                        var data;
+                        var model = self.findWhere({aid:item.aid, owner_id:item.owner_id});
+                        if(model){
+                            data = model.toJSON();
+                            dataNew = $.extend(true, data, item);
+                            if(data.play){
+                                dataNew.play = true;
+                            }
+
+                            model.set(data);
+                        }
+
+                    }, self);
+
                     self.app.log('MusicCollection.postLoad load set items. ' + self.length);
                 }
             });

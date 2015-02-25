@@ -12,7 +12,8 @@ define([
     var PlayControllerModel = Backbone.Model.extend({
         defaults: {
             repeat: false,
-            setBroadcast: false
+            setBroadcast: false,
+            volume:0.5
         },
 
         initialize: function () {

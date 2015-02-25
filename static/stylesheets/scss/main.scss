@@ -166,6 +166,7 @@
   position: absolute;
   background: #009CFF;
   width: 8px;
+  margin-left: -4px;
   height: 8px;
   left: 0;
   bottom: -1px;
@@ -247,4 +248,63 @@
   font-size: 11px;
   font-style: italic;
   margin: 3px 0;
+}
+
+.player-controller-controls-volume-wrap{
+
+  margin-left: 5px;
+  margin-right: 5px;
+  display: inline-block;
+  vertical-align: middle;
+
+  position: relative;
+  clear: left;
+  height: 8px;
+  background: #2f2f2f;
+  cursor: pointer;
+  width:100px;
+  margin-bottom: 8px;
+
+  @include border-radius(2px);
+
+}
+.player-controller-controls-volume {
+  background: #c9c9c9;
+  width: 92%;
+  left:4%;
+  height: 4px;
+  z-index: 1;
+  position: absolute;
+  bottom:2px;
+
+  @include border-radius(3px);
+}
+
+.player-controller-controls-volume__value {
+  position: absolute;
+  background: #009CFF;
+  margin-left: -4px;
+  width: 8px;
+  height: 8px;
+  left: 0;
+  bottom: -3px;
+  z-index: 2;
+
+  -webkit-transition: left 0.05s ease;
+  -o-transition: left 0.05s ease;
+  transition: left 0.05s ease;
+
+  @include border-radius(8px);
+}
+
+.progress {
+
+}
+
+.progress-position {
+
+}
+
+.progress-value {
+
 }

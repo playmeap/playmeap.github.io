@@ -28,7 +28,8 @@ define([
             'click .player-controller-control__pause': 'eventClickPause',
             'click .player-controller-control__stop': 'stop',
             'click .player-controller-control__backward': 'prev',
-            'click .player-controller-control__forward': 'next'
+            'click .player-controller-control__forward': 'next',
+            'click .player-controller-controls-volume-wrap':'eventClickVolume'
         },
 
         initialize: function () {
@@ -41,6 +42,7 @@ define([
             //this.model.bind('change:searchName', this.changeSearchName, this);
 
             this.model.bind('change:repeat', this.changeRepeat, this);
+            this.model.bind('change:volume', this.changeVolume, this);
         },
 
         eventKeyupSearch: function (e) {
@@ -67,6 +69,36 @@ define([
             this.pause();
         },
 
+        eventClickVolume:function(e){
+
+            var volumewidth = this.nodes.$volumewrap.width();
+            //var volumepos = parseInt(this.nodes.controls.$volume.css('left').replace('%', ''));
+
+            var value;
+
+            var x = e.offsetX == undefined ? e.layerX : e.offsetX;
+            if(x == undefined){
+                x = e.pageX || e.x;
+                x = x -  e.target.getBoundingClientRect().left;
+            }
+
+            /**
+             * TODO
+             */
+
+            value = x / volumewidth;
+            if(value < 0){
+                value = 0;
+            }
+
+            if(value > 1){
+                value = 1;
+            }
+
+            this.model.set({volume:value});
+
+        },
+
         /**
          * change events
          * @returns {PlayerController}
@@ -87,10 +119,28 @@ define([
             return this;
         },
 
+        changeVolume:function(){
+
+            var volume = this.model.get('volume');
+            var cssvol = volume * 100;
+            this.nodes.controls.$volume.css('left', cssvol + '%');
+            this.setvol(volume);
+        },
+
         /**
          * controls
          * @param time
          */
+
+        setvol:function(value){
+
+            if(!this.nodes.item){
+                return false;
+            }
+
+            this.nodes.item.volume = value;
+
+        },
 
         rewind: function (time) {
             var model = this.model.getAudioModel();
@@ -358,6 +408,7 @@ define([
 
                 this.nodes.item = item;
                 this.model.set({aid: parseInt(aid), owner_id: parseInt(owner_id)});
+                this.nodes.item.volume = this.model.get('volume');
                 this.nodes.item.play();
 
                 item.addEventListener('ended', function () {
@@ -380,6 +431,7 @@ define([
                 model.views.item = item;
 
                 model.set({itemId:item.id});
+                this.nodes.item.volume = this.model.get('volume');
 
                 this.model.set({aid: parseInt(aid), owner_id: parseInt(owner_id)});
 
@@ -422,6 +474,8 @@ define([
             this.nodes.controls.$stop = this.$el.find('.player-controller-control__stop');
             this.nodes.controls.$repeat = this.$el.find('.player-controller-control__repeat');
             this.nodes.controls.$broadcast = this.$el.find('.player-controller-control__bullhorn');
+            this.nodes.$volumewrap = this.$el.find('.player-controller-controls-volume');
+            this.nodes.controls.$volume = this.$el.find('.player-controller-controls-volume__value');
 
             this.children.player = new PlayControllerPlayer({
                 parent: this,
