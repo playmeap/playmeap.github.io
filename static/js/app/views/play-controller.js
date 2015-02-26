@@ -26,6 +26,7 @@ define([
             'click .player-controller-control__repeat': 'eventClickRepeat',
             'click .player-controller-control__play': 'play',
             'click .player-controller-control__pause': 'eventClickPause',
+            'change .player-controller-search__search-type': 'eventChangeSearchGlobal',
             'click .player-controller-control__stop': 'stop',
             'click .player-controller-control__backward': 'prev',
             'click .player-controller-control__forward': 'next',
@@ -60,13 +61,17 @@ define([
         },
 
         eventClickRepeat: function (e) {
-            var repeat = this.model.get('repeat');
+            var repeat = (e.target.className.indexOf('active') >= 0);
             this.repeat(!repeat);
             return this;
         },
 
         eventClickPause: function () {
             this.pause();
+        },
+
+        eventChangeSearchGlobal:function(e){
+            this.model.set({searchGlobal: e.target.checked});
         },
 
         eventClickVolume:function(e){
@@ -340,6 +345,11 @@ define([
             };
 
             var ended = function () {
+
+                if(self.model.get('repeat')){
+                    self.play(self.model.get('aid'), self.model.get('owner_id'))
+                    return this;
+                }
                 self.next();
             };
 

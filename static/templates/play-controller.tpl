@@ -40,7 +40,14 @@
             <div class="col-sm-12 player-controller-search">
                 <div class="row">
                     <div class="col-sm-6 col-sm-offset-3">
-                        <input class="player-controller-search__input" type="text" placeholder="название аудиозаписи, id или имя друга"/>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input class="player-controller-search__input" type="text" placeholder="название аудиозаписи, id или имя друга"/>
+                            </div>
+                            <div class="col-sm-4 display-none">
+                                <label class="player-controller-search__label" title="глобальный поиск аудио или людей"><input type="checkbox" class="player-controller-search__search-type"/> глобальный поиск</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

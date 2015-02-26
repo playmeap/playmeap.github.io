@@ -32,6 +32,29 @@
   padding-right: $height-input-big / 2;
 }
 
+.player-controller-search__label {
+  display: block;
+  width: 100%;
+  height: $height-input-big;
+  line-height: $height-input-big;
+//  padding-left: $height-input-big / 2;
+//  padding-right: $height-input-big / 2;
+  font-weight: bold;
+  font-size: 12px;
+  position: relative;
+  padding-left: 20px;
+  cursor: pointer;
+}
+
+.player-controller-search__search-type {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 12px;
+  margin-right: 3px;
+  line-height: $height-input-big;
+}
+
 .albums-list-view {
 }
 
@@ -131,8 +154,7 @@
 }
 
 .player-controller-player-header {
-  height: 36px;
-  line-height: 36px;
+  min-height: 36px;
   text-align: center;
 }
 

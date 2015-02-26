@@ -13,7 +13,8 @@ define([
         defaults: {
             repeat: false,
             setBroadcast: false,
-            volume:0.5
+            volume:0.5,
+            searchGlobal:false
         },
 
         initialize: function () {
