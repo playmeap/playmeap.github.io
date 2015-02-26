@@ -52,6 +52,49 @@ define([
             this.model.bind('audio.add', this.addcomplete, this);
         },
 
+        /**
+         * create node audio item and return
+         */
+        getNodeAudio:function(){
+
+            var node = document.getElementById('' +
+                'audio-preload-' +
+                this.model.get('aid') + '-' +
+                this.model.get('owner_id')
+            );
+
+            if(node){
+                return node;
+            }
+
+            var data = this.model.toJSON();
+            var item = document.createElement('audio');
+
+            item.id = 'audio-preload-' + data.aid + '-' + data.owner_id;
+            item.setAttribute('src', data.url);
+            item.setAttribute('data-aid', data.aid);
+            item.setAttribute('data-owner_id', data.owner_id);
+            item.setAttribute('preload', 'auto');
+
+            this.app.views.index.nodes.cache.appendChild(item);
+
+            if(!this.model.views){
+                this.model.views = {};
+            }
+
+            this.model.set({itemId:item.id});
+
+            node = document.getElementById('' +
+                'audio-preload-' +
+                this.model.get('aid') + '-' +
+                this.model.get('owner_id')
+            );
+
+            this.model.views.item = node;
+
+            return node;
+        },
+
         changePlayProgress:function(){
             var playprogess = this.model.get('playprogess');
             this.nodes.$progressPosition.css({left:playprogess + '%'});

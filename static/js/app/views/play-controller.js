@@ -40,6 +40,9 @@ define([
             this.model = new PlayControllerModelClass();
             this.model.view = this;
             this.app.models.playercontroller = this.model;
+
+            this.models = {};
+
             //this.model.bind('change:searchName', this.changeSearchName, this);
 
             this.model.bind('change:repeat', this.changeRepeat, this);
@@ -265,30 +268,6 @@ define([
             var model = this.model.getAudioModel();
             var modelData = model.toJSON();
 
-            /**
-             * remove and next error item
-             */
-            (function (n, m) {
-
-                setTimeout(function () {
-                    if (n.buffered.length === 0) {
-
-                        n.remove();
-                        var selfmodel = self.model.getAudioModel();
-
-                        if (n.getAttribute('data-aid') == selfmodel.get('aid')
-                            && n.getAttribute('data-owner_id') == selfmodel.get('owner_id')) {
-                            /**
-                             * TODO need create reload method
-                             */
-                            self.next();
-                        }
-
-                    }
-                }, 3000);
-
-            })(item, model);
-
 
             if (this.timers.process) {
                 clearInterval(this.timers.process);
@@ -316,10 +295,10 @@ define([
                 var loadprogess = 0;
                 var ranges = [];
 
-                for (var i = 0; i < item.buffered.length; i++) {
+                for (var i = 0; i < this.buffered.length; i++) {
                     ranges.push([
-                        item.buffered.start(i),
-                        item.buffered.end(i)
+                        this.buffered.start(i),
+                        this.buffered.end(i)
                     ]);
                 }
 
@@ -342,6 +321,17 @@ define([
                 var model = self.model.getAudioModel(aid, owner_id);
                 model.set({loadprogess:loadprogess});
 
+                if(this.buffered.length > 0
+                    && this.paused
+                    && parseInt(aid) == self.model.get('aid')
+                    && parseInt(owner_id) == self.model.get('owner_id')){
+
+                    /**
+                     * PLAY ITEM
+                     */
+                    this.play();
+                }
+
             };
 
             var ended = function () {
@@ -357,6 +347,34 @@ define([
             item.addEventListener('progress', progress);
 
 
+            /**
+             * remove and next error item
+             */
+            (function (n, m, pFunc, eFunc) {
+
+                setTimeout(function () {
+
+                    if (
+                        n.buffered.length === 0
+                        && m.get('aid') == self.model.get('aid')
+                        && m.get('owner_id') == self.model.get('owner_id')) {
+
+                        if(n.currentTime){
+                            n.currentTime = 0;
+                        }
+
+                        n.removeEventListener('ended', eFunc);
+                        n.removeEventListener('progress', pFunc);
+                        n.pause();
+                        n.remove();
+                        self.nodes.item.remove();
+                        self.play(m.get('aid'), m.get('owner_id'));
+                    }
+
+                }, 8000);
+
+            })(item, model, progress, ended);
+
         },
 
         play: function (aid, owner_id) {
@@ -366,7 +384,7 @@ define([
                 aid = false;
             }
 
-            var self = this;
+            //var self = this;
             var model;
 
             if (aid && owner_id) {
@@ -381,21 +399,46 @@ define([
             this.app.log('PlayerController play aid:' + aid + ' | owner_id:' + owner_id);
             model.set({play: true});
 
+            if(this.models.current){
+                this.models.prev = this.models.current;
+            }
+
+            if(this.models.prev){
+                this.models.prev.set({play:false});
+            }
+
+            this.models.current = model;
 
             this.app.collections.audios.setElement(model);
 
-            var item = document.getElementById('audio-preload-' + aid + '-' + owner_id);
+            /**
+            * view changes
+            */
+            this.nodes.controls.$play.addClass('display-none');
+            this.nodes.controls.$pause.removeClass('display-none');
+            /**
+            * #
+            */
 
-            if (!this.nodes.cache) {
-                this.nodes.cache = this.app.views.index.nodes.cache;
+            var events = false;
+            var item = document.getElementById('' +
+                'audio-preload-' +
+                model.get('aid') + '-' +
+                model.get('owner_id')
+            );
+
+            if(!item){
+                events = true;
             }
 
+            item = model.views.list.getNodeAudio();
+
             /**
-             * if this.nodes.item isset and item not found
-             * or this.nodes.item isset and item isset and this.nodes.item !== item
-             * need set this.nodes.item time = 0, stop element
-             */
-            if ((this.nodes.item && !item) || (this.nodes.item && item && item !== this.nodes.item)) {
+            * if this.nodes.item isset and item not found
+            * or this.nodes.item isset and item isset and this.nodes.item !== item
+            * need set this.nodes.item time = 0, stop element
+            */
+            if (this.nodes.item && item && item !== this.nodes.item) {
 
                 this.app.log('PlayerController play:' + aid + ', previous item.currentTime = 0');
 
@@ -406,56 +449,24 @@ define([
             }
 
             /**
-             * view changes
+             * TODO
+             * @type {HTMLElement}
              */
-            this.nodes.controls.$play.addClass('display-none');
-            this.nodes.controls.$pause.removeClass('display-none');
-            /**
-             * #
-             */
+            this.nodes.item = item;
+            this.nodes.item.volume = this.model.get('volume');
+            this.model.set({aid: parseInt(aid), owner_id: parseInt(owner_id)});
 
-            if (item) {
-
-                this.nodes.item = item;
-                this.model.set({aid: parseInt(aid), owner_id: parseInt(owner_id)});
-                this.nodes.item.volume = this.model.get('volume');
-                this.nodes.item.play();
-
-                item.addEventListener('ended', function () {
-                    self.next();
-                });
-
-            }
-
-            if (!item) {
-
-                item = document.createElement('audio');
-                item.id = 'audio-preload-' + aid + '-' + owner_id;
-                //item.setAttribute('src', model.get('url').split('?')[0]);
-                item.setAttribute('src', model.get('url'));
-                item.setAttribute('data-aid', aid);
-                item.setAttribute('data-owner_id', owner_id);
-
-                this.nodes.cache.appendChild(item);
-                this.nodes.item = item;
-                model.views.item = item;
-
-                model.set({itemId:item.id});
-                this.nodes.item.volume = this.model.get('volume');
-
-                this.model.set({aid: parseInt(aid), owner_id: parseInt(owner_id)});
-
-                item.play();
-
-
-                /**
-                 * todo
-                 */
-                this._makeItemEvents();
-            }
-            //
             var previousAid = this.model.previous('aid');
             var previousOwner_id = this.model.previous('owner_id');
+
+            if(events){
+                this._makeItemEvents();
+            }else{
+                /**
+                 * TODO play active item
+                 */
+                this.nodes.item.play();
+            }
 
             /**
              * set play false model
