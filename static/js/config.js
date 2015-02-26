@@ -5,7 +5,7 @@ define('config', [], function () {
     return {
 
         defaultOptions:{
-            version: "0.0.2",
+            version: "0.0.3",
             debug: false,
             apiIds:{
                 active:0,
@@ -17,6 +17,8 @@ define('config', [], function () {
                 intValues: [2, 8, 1024, 262144, 65536]
             }
         },
+
+        urlArgs: "v=0.0.3",
         
         "paths": {
             "jquery": "libs/jquery-1.11.2.min",
