@@ -385,13 +385,17 @@ define([
                 aid = false;
             }
 
-            //var self = this;
             var model;
 
             if (aid && owner_id) {
                 model = this.model.getAudioModel(aid, owner_id);
             } else {
                 model = this.model.getAudioModel();
+                if(!model){
+                    alert('please wait.... items not load');
+                    return false;
+                }
+
                 aid = model.get('aid');
                 owner_id = model.get('owner_id');
             }

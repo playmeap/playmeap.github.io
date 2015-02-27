@@ -25,6 +25,22 @@ define([
             if(!this.getCacheCollection(data)){
                 this.cache.push({items:items, data:data});
                 this.app.log('getCacheCollection.saveCacheCollection');
+            }else{
+
+                var cacheItems = this.getCacheCollection(data);
+                var mergeItems = this.mergeItems(items, cacheItems);
+
+                this.cache = _.map(this.cache, function(cache){
+
+                    if(_.isEqual(cache.data, data)){
+                        return mergeItems;
+                    }
+
+                    return cache;
+
+                }, this);
+
+                this.app.log('getCacheCollection.saveCacheCollection [update-merge]');
             }
         },
 
@@ -96,15 +112,11 @@ define([
                     return item;
                 }
 
-                data = $.extend(true, model.toJSON(), item);
-
-                if(currentAid && currentAid == data.aid){
-                    data.play = true;
-                }else{
-                    data.play = false;
+                if(model && model.attributes){
+                    return _.extend(model.toJSON(), item);
                 }
 
-                return data;
+                return _.extend(model, item);
 
             }, this);
 
@@ -121,9 +133,6 @@ define([
 
             var self = this;
 
-            var playercontroller = self.app.models.playercontroller;
-            var currentAid = parseInt(playercontroller.get('aid'));
-
             VK.Api.call(this.url, data, function (r) {
 
                 if (r && r.response) {
@@ -132,48 +141,33 @@ define([
                      * TODO FIX ERROR
                      * @type {Array.<T>|string|Blob|*}
                      */
+
                     var items = r.response.slice(1, r.response.length);
-                    items = self.mergeItems(items);
 
-                    _.each(items, function(item){
+                    var playercontroller = self.app.models.playercontroller;
+                    var currentOwner_id = parseInt(playercontroller.get('owner_id'));
 
-                        var data;
-                        var model = self.findWhere({aid:item.aid, owner_id:item.owner_id});
-                        if(model){
-                            data = model.toJSON();
-                            if(data.play){
-                                data.play = false;
-                            }
-                            data = $.extend(true, data, item);
+                    if(currentOwner_id === parseInt(data.owner_id)){
 
-                            if(currentAid && currentAid == data.aid){
-                                data.play = true;
+                        _.each(items, function(item){
+
+                            var oldItem = self.findWhere({aid:item.aid, owner_id:item.owner_id});
+
+                            if(oldItem){
+                                var newItem = _.extend(item, oldItem.toJSON());
+                                oldItem.set(newItem);
                             }else{
-                                data.play = false;
+                                self.unshift(item);
+                                self.trigger('unshift');
                             }
 
-                            model.set(data);
-                        }
+                        }, this);
 
-                    }, self);
+                    }
 
                     self.app.log('MusicCollection.postLoad load set items. ' + self.length);
                 }
             });
-
-        },
-
-        getUserCollection:function(owner_id, album_id, callback, context){
-
-            if(!owner_id){
-                owner_id = this.app.attributes.mid;
-            }
-
-            if(!context){
-                context = this;
-            }
-
-
 
         },
 
