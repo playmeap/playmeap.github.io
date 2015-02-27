@@ -36,7 +36,11 @@ define([
 
             this.$el.addClass('preload');
             var user_id = this.app.playercontroller.model.get('owner_id');
-            this.model.loadUserData(user_id);
+
+            this.model.clear({silent:true});
+            this.model.set({user_id:user_id}, {silent:true});
+            this.model.fetch();
+
         },
 
         render:function(){

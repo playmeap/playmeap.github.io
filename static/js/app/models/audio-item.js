@@ -34,7 +34,7 @@ define([
 
                 if (r && r.response) {
 
-                    self.set({aid: r.response});
+                    //self.set({aid: r.response});
                     self.trigger('audio.add');
 
                 } else {
@@ -58,8 +58,8 @@ define([
                 if (r && r.response) {
 
                     self.set({aid: r.response});
+                    self.collection.remove(self);
                     self.trigger('audio.delete');
-                    self.collection.remove(self.model);
 
                 } else {
                     alert(r.error.error_msg);

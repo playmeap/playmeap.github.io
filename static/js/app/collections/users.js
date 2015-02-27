@@ -1,35 +1,39 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
+    'backbone',
+    'app/models/user-profile'
 ], function ($,
              _,
-             Backbone) {
+             Backbone,
+             UserProfileModelClass) {
+
     var UsersCollection = Backbone.Collection.extend({
 
-        url:'friends.get',
+        url: 'friends.get',
+        model:UserProfileModelClass,
 
-        initialize:function(){
+        initialize: function () {
 
             this.collectionModel = new (Backbone.Model.extend());
             this.collectionModel.set({
-                fields:['nickname', 'sex', 'bdate', 'photo_50', 'online', 'status', 'can_see_audio', 'online']
-            }, {silent:true});
+                fields: ['nickname', 'sex', 'bdate', 'photo_50', 'online', 'status', 'can_see_audio', 'online']
+            }, {silent: true});
 
             this.collectionModel.bind('change', this.fetch, this);
             this.setElement(this.at(0));
 
         },
 
-        searchByName:function(name){
+        searchByName: function (name) {
 
             name = name.split(' ').join('').toLocaleLowerCase();
 
-            if(!name){
+            if (!name) {
                 return false;
             }
 
-            var items = _.filter(this.models, function(model){
+            var items = _.filter(this.models, function (model) {
 
                 var first_name = model.get('first_name');
                 var last_name = model.get('last_name');
@@ -39,7 +43,7 @@ define([
                 str = str.split(' ').join('').toLocaleLowerCase();
 
                 var index = str.indexOf(name);
-                if(index >= 0){
+                if (index >= 0) {
                     return true;
                 }
 
@@ -48,7 +52,7 @@ define([
             return items;
         },
 
-        fetch:function(){
+        fetch: function () {
 
             var self = this;
             var data = this.collectionModel.toJSON();
@@ -57,11 +61,13 @@ define([
 
                 if (r && r.response) {
 
-                    var items = _.filter(r.response, function(item){
+                    var items = _.filter(r.response, function (item) {
                         return item.can_see_audio;
                     }, self);
 
                     self.reset(items);
+                    self.setElement(self.at(0));
+
                 } else {
                     alert(r.error.error_msg);
                     self.reset([]);
@@ -70,24 +76,24 @@ define([
 
         },
 
-        getElement: function() {
+        getElement: function () {
             return this.currentElement;
         },
 
-        setElement: function(model) {
+        setElement: function (model) {
             this.currentElement = model;
         },
 
-        next: function (){
+        next: function () {
             this.setElement(this.at(this.indexOf(this.getElement()) + 1));
             return this;
         },
 
-        prev: function() {
+        prev: function () {
             this.setElement(this.at(this.indexOf(this.getElement()) - 1));
             return this;
         }
     });
 
-    return UsersCollection ;
+    return UsersCollection;
 });

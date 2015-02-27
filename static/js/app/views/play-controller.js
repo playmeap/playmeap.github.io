@@ -42,6 +42,7 @@ define([
             this.app.models.playercontroller = this.model;
 
             this.models = {};
+            this.items = {};
 
             //this.model.bind('change:searchName', this.changeSearchName, this);
 
@@ -151,7 +152,7 @@ define([
         },
 
         rewind: function (time) {
-            var model = this.model.getAudioModel();
+            var model = this.model.getAudioModel(this.model.get('aid'), this.model.get('owner_id'));
             var duration = model.get('duration');
             this.nodes.item.currentTime = time;
             this.app.log('PlayerController rewind:' + time);
@@ -204,7 +205,7 @@ define([
                 return false;
             }
 
-            var model = this.model.getAudioModel();
+            var model = this.model.getAudioModel(this.model.get('aid'), this.model.get('owner_id'));
             model.set({play: false});
 
             if (this.nodes.item.currentTime) {
@@ -241,7 +242,7 @@ define([
 
             //var previousCid = this.model.previous('acid');
             //var cid = this.model.get('cid');
-            var model = this.model.getAudioModel();
+            var model = this.model.getAudioModel(this.model.get('aid'), this.model.get('owner_id'));
 
             /**
              * set play false model
@@ -265,7 +266,7 @@ define([
 
             var self = this;
             var item = this.nodes.item;
-            var model = this.model.getAudioModel();
+            var model = this.model.getAudioModel(this.model.get('aid'), this.model.get('owner_id'));
             var modelData = model.toJSON();
 
 
@@ -456,8 +457,8 @@ define([
             this.nodes.item.volume = this.model.get('volume');
             this.model.set({aid: parseInt(aid), owner_id: parseInt(owner_id)});
 
-            var previousAid = this.model.previous('aid');
-            var previousOwner_id = this.model.previous('owner_id');
+            //var previousAid = this.model.previous('aid');
+            //var previousOwner_id = this.model.previous('owner_id');
 
             if(events){
                 this._makeItemEvents();
@@ -471,10 +472,8 @@ define([
             /**
              * set play false model
              */
-            if (previousAid && previousAid !== aid) {
-                var previousModel = this.model.getAudioModel(previousAid, previousOwner_id);
-                previousModel.set({play: false});
-                this.app.log('PlayerController previous set play:false, aid:' + previousAid + ' | owner_id:' + previousOwner_id);
+            if(this.models.prev){
+                this.models.prev.set({play:false});
             }
 
         },

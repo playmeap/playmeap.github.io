@@ -53,6 +53,7 @@ define([
 
                     var items = r.response.slice(1, r.response.length);
                     self.reset(items);
+                    //self.setElement(self.at(0));
 
                 } else {
                     alert(r.error.error_msg);

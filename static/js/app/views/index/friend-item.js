@@ -30,10 +30,16 @@ define([
 
             this.el.id = 'friend-item_' + data.user_id;
             this.nodes.$link = this.$el.children('.friends-list-item-link');
+            this.nodes.$photo = this.$el.find('.friends-list-item-photo');
 
             var photo_50 = new Image();
             photo_50.onload = function () {
                 self.$el.removeClass('preload');
+            };
+
+            photo_50.onerror = function(){
+                self.$el.removeClass('preload');
+                self.nodes.$photo.attr('src', self.model.defaultAttributes.photo_50);
             };
 
             photo_50.src = data.photo_50;

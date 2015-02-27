@@ -74,7 +74,7 @@ define([
             item.setAttribute('src', data.url);
             item.setAttribute('data-aid', data.aid);
             item.setAttribute('data-owner_id', data.owner_id);
-            item.setAttribute('preload', 'auto');
+            //item.setAttribute('preload', 'auto');
 
             this.app.views.index.nodes.cache.appendChild(item);
 
@@ -110,9 +110,11 @@ define([
             this.app.log('AudioItemView.changePlay: ' + this.model.get('play') + ', aid:' + this.model.get('aid') + '| owner_id:' + this.model.get('owner_id') + ' CID:' + this.model.cid);
 
             if(this.model.get('play')){
+
                 this.nodes.$progress.removeClass('display-none');
                 this.nodes.controls.$play.addClass('display-none');
                 this.nodes.controls.$pause.removeClass('display-none');
+
                 return this;
             }
 

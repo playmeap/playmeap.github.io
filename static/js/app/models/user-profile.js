@@ -15,43 +15,32 @@ define([
             'users.get':'users.get'
         },
 
+        defaultAttributes:{
+            'photo_50':'static/images/default_photo_50.png'
+        },
+
+        loadData:{
+            user_ids:[],
+            fields:['nickname', 'sex', 'bdate', 'photo_50', 'online', 'status', 'can_see_audio', 'online']
+        },
+
         initialize:function(){
 
         },
 
-        loadUserData:function(user_id){
+        fetch:function(){
 
-            var data;
             var self = this;
-            var id = parseInt(user_id);
+            this.loadData.user_ids = [this.get('user_id')];
 
-            var loadData = {
-                user_ids:[id],
-                fields:['nickname', 'sex', 'bdate', 'photo_50', 'online', 'status', 'can_see_audio', 'online']
-            };
-
-            if(!id){
-                this.clear();
-                return false;
-            }
-
-            var model = this.app.collections.users.findWhere({user_id:id});
-            if(model){
-                data = model.toJSON();
-                this.set(data);
-                return this;
-            }
-
-            VK.Api.call(this.urls['users.get'], loadData, function (r) {
+            VK.Api.call(this.urls['users.get'], self.loadData, function (r) {
 
                 if (r && r.response) {
-
                     var user = _.first(r.response);
-                    self.clear({silent:true});
+                    //self.clear({silent:true});
                     self.set(user);
-
                 } else {
-                    self.clear();
+                    //context.clear();
                 }
             });
 

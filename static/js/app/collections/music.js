@@ -24,6 +24,7 @@ define([
         saveCacheCollection:function(items, data){
             if(!this.getCacheCollection(data)){
                 this.cache.push({items:items, data:data});
+                this.app.log('getCacheCollection.saveCacheCollection');
             }
         },
 
@@ -41,6 +42,12 @@ define([
                 items = itemsCollection.items;
             }
 
+            if(items){
+                this.app.log('MusicCollection.getCacheCollection items:' + items.length);
+                return items;
+            }
+
+            this.app.log('MusicCollection.getCacheCollection items:false');
             return items;
         },
 
@@ -101,6 +108,7 @@ define([
 
             }, this);
 
+            this.app.log('getCacheCollection.mergeItems');
             return itemsMerge;
 
         },
@@ -200,6 +208,7 @@ define([
                     var items = r.response.slice(1, r.response.length);
                     items = self.mergeItems(items);
                     self.reset(items);
+                    self.setElement(self.at(0));
 
                 } else {
                     alert(r.error.error_msg);
