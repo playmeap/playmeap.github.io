@@ -7,6 +7,8 @@ define('config', [], function () {
         defaultOptions:{
             version: "0.0.5",
             debug: false,
+            demo:false,
+            ajaxDemoUrl:'/demo/apidemo.php?',
             apiIds:{
                 active:0,
                 prod:4664170,

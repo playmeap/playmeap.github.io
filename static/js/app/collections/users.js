@@ -61,6 +61,8 @@ define([
 
                 if (r && r.response) {
 
+                    //console.log(JSON.stringify(r.response));
+
                     var items = _.filter(r.response, function (item) {
                         return item.can_see_audio;
                     }, self);
@@ -74,24 +76,6 @@ define([
                 }
             });
 
-        },
-
-        getElement: function () {
-            return this.currentElement;
-        },
-
-        setElement: function (model) {
-            this.currentElement = model;
-        },
-
-        next: function () {
-            this.setElement(this.at(this.indexOf(this.getElement()) + 1));
-            return this;
-        },
-
-        prev: function () {
-            this.setElement(this.at(this.indexOf(this.getElement()) - 1));
-            return this;
         }
     });
 

@@ -2,7 +2,8 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'app/collections/music',
+    'app/collections/audios',
+    //'app/collections/music',
     'app/collections/playlists',
     'app/collections/users',
     'app/views/index/index',
@@ -96,6 +97,8 @@ define([
             //this.app.collections.audios.collectionModel.clear({silent:true});
             //this.app.collections.albums.collectionModel.clear({silent:true});
             //this.app.collections.users.collectionModel.clear({silent:true});
+
+            this.app.views.indexPage.children.audios.$el.addClass('preload');
 
             this.app.collections.audios.collectionModel.set({owner_id:id, album_id:''});
             this.app.collections.albums.collectionModel.set({owner_id:this.app.attributes.mid});

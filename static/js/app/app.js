@@ -3,84 +3,50 @@ define([
     'underscore',
     'backbone',
     'app/router',
-    'config'
+    'config',
+    'app/helpers/index'
 ], function ($,
              _,
              Backbone,
              RouterClass,
-             config) {
-
-    /**
-    * Backbone.View extend
-    * recursively remove child views (nodes and events) if parent view remove
-    * @type {Function|Backbone.View.remove}
-    */
-    var DefaultRemove = Backbone.View.prototype.remove;
-    Backbone.View.prototype.remove = function () {
-
-        if(this.nodes){
-            for(var m in this.nodes){
-
-                if(m.indexOf('$') >= 0){
-                    this.nodes[m].remove();
-                }
-
-                //if(m === 'item'){
-                //    //this.nodes[m].removeEventListener('ended');
-                //    //this.nodes[m].removeEventListener('progress');
-                //}
-            }
-        }
-
-        if (this.children) {
-            for (var n in this.children) {
-                if (this.children[n].remove) {
-                    this.children[n].remove();
-                }
-            }
-        }
-        return DefaultRemove.call(this, arguments);
-    };
+             config,
+             ProtoObj) {
 
     var App = {
-        views:{},
-        models:{},
-        collections:{}
+        views: {},
+        models: {},
+        collections: {}
     };
 
     App.config = _.extend(config, {});
-    App.options = _.extend(App.config.defaultOptions, {});
 
     App.attributes = {};
     App._attributes = {};
 
-    App.fn = {};
-    App.fn.getScope = function(){
-        return App.options.scope.intValues.reduce(function (prev, current) {
-            return parseInt(prev) + parseInt(current);
-        });
-    };
+    _.extend(App.attributes, App.config.defaultOptions);
+
+    _.each(ProtoObj, function(Pclass, name){
+
+        Pclass.prototype.app = this;
+        this[name] = new Pclass();
+
+    }, App);
+
 
     /**
-    * App log functions
-    * print to console errors or messages
-    * @param data
-    */
+     * App log functions
+     * print to console errors or messages
+     * @param data
+     */
     App.log = function (data) {
-        if (App.options.debug) {
 
-            if(typeof data === 'string'){
-                console.log('>> ' + data);
-            }
+        if (App.attributes.debug) {
 
-            if (data.data) {
-                console.log(data.data);
-                console.log('');
-            }
+            console.log(data);
         }
     };
 
-    App.fn.initialize = function(){
+    App.fn.initialize = function () {
 
         App.log('[App.fn.initialize]');
 
@@ -88,7 +54,9 @@ define([
 
 
     App.fn.start = function () {
+
         App.log('App.fn.start');
+        App.log({data:App});
 
         Backbone.Router.prototype.app = App;
         Backbone.View.prototype.app = App;
@@ -126,30 +94,20 @@ define([
         }
     };
 
-
-    if(document.location.href.indexOf('local') >= 0){
-        App.options.debug = true;
-    }
-
-    App.options.apiIds.active = (App.options.debug)? App.options.apiIds.test : App.options.apiIds.prod;
-
-    VK.init({
-        apiId: App.options.apiIds.active
+    App.vk.init({
+        apiId: App.attributes.apiIds.active
     });
 
-
-    VK.Auth.getLoginStatus(function (resp) {
+    App.vk.Auth.getLoginStatus(function (resp) {
 
         if (resp.session) {
 
             App.log('app.js VK.Auth.getLoginStatus : login = true');
 
-            App.attributes.login = true;;
-            _.extend(App.attributes, App.options.defaultOptions, resp.session);
-            App.fn.start();
+            App.fn.set('login', true);
+            App.fn.set(resp.session);
 
-            // FIX TODO
-            sessionStorage.setItem('respsession', JSON.stringify(resp.session));
+            App.fn.start();
 
             //VK.Api.call('status.get', {owner_id: App.defaultOptions.mid}, function (r) {
             //
@@ -162,15 +120,14 @@ define([
             //
             //});
 
-        }else{
+        } else {
+
             App.log('app.js VK.Auth.getLoginStatus : login = false');
-            _.extend(App.attributes, App.options.defaultOptions);
             App.fn.start();
-            //App.start();
+            App.log({data: {msg: 'app js init', app: App}});
         }
 
     });
-
 
 
     return App;

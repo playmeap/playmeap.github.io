@@ -24,7 +24,9 @@ define([
             'click .audios-list-item-control-remove':'eventClickRemove',
             'click .audios-list-item-control-remove-cancel':'eventClickRemoveCancel',
             'change input[name="duration-set"]':'eventSetTime',
-            'click .audios-list-item-progress':'eventClickSetTime'
+            'click .audios-list-item-progress':'eventClickSetTime',
+
+            'click .audios-list-item-title__title':'eventClickTitle'
         },
 
         initialize:function(options){
@@ -47,9 +49,24 @@ define([
             this.model.bind('change:play', this.changePlay, this);
             this.model.bind('change:playprogess', this.changePlayProgress, this);
             this.model.bind('change:loadprogess', this.changeLoadProgress, this);
+            this.model.bind('change:owner', this.render, this);
 
             this.model.bind('audio.delete', this.remove, this);
             this.model.bind('audio.add', this.addcomplete, this);
+
+            this.model.bind('audio.isset', this.audioIsset, this);
+        },
+
+        audioIsset:function(){
+
+            var node = $('<span class="audios-list-item-message-popup">у вас уже есть эта аудиозапись</span>');
+            this.$el.append(node);
+
+            this.$el.removeClass('preload');
+
+            setTimeout(function(){
+                node.remove();
+            }, 4000);
         },
 
         /**
@@ -183,10 +200,19 @@ define([
             this.$el.removeClass('preload');
         },
 
+        eventClickTitle:function(){
+            if(this.app.fn.get('debug')){
+                this.app.log({msg:'ITEM VIEW', data:this.el});
+                this.app.log({msg:'ITEM MODEL', data:{json:this.model.toJSON(), model:this.model}});
+            }
+        },
+
         render:function(){
 
             var html;
             var data = this.model.toJSON();
+
+            this.$el.removeClass('preload');
 
             data.plus = false;
 

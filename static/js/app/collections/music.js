@@ -22,8 +22,17 @@ define([
         },
 
         saveCacheCollection:function(items, data){
+
+            var saveObj = {};
+            saveObj.items = items;
+            saveObj.data = data;
+
+            if(parseInt(data.owner_id) === parseInt(this.app.attributes.min)){
+                saveObj.owner = true;
+            }
+
             if(!this.getCacheCollection(data)){
-                this.cache.push({items:items, data:data});
+                this.cache.push(saveObj);
                 this.app.log('getCacheCollection.saveCacheCollection');
             }else{
 
@@ -33,7 +42,8 @@ define([
                 this.cache = _.map(this.cache, function(cache){
 
                     if(_.isEqual(cache.data, data)){
-                        return mergeItems;
+                        saveObj.items = mergeItems;
+                        return saveObj;
                     }
 
                     return cache;
@@ -42,6 +52,35 @@ define([
 
                 this.app.log('getCacheCollection.saveCacheCollection [update-merge]');
             }
+        },
+
+        getOwnerCollection:function(callback){
+
+            var out;
+            var self = this;
+            out = _.filter(this.cache, function(cache){
+                if(parseInt(cache.data.owner_id) === parseInt(this.app.attributes.mid)){
+                    return true;
+                }
+            }, this);
+
+            if(out && out.length >= 1){
+
+                if(callback){
+                    return callback.call(this, out[0].items);
+                }
+
+                return out.slice(1);
+            }
+
+            var data = {};
+            data.owner_id = parseInt(this.app.attributes.mid);
+
+            this.postLoad(data, function(){
+                self.getOwnerCollection(callback)
+            });
+
+            return false;
         },
 
         getCacheCollection:function(data){
@@ -93,10 +132,7 @@ define([
 
         mergeItems:function(items, itemsOld){
 
-            var self = this;
             var itemsMerge;
-            var playercontroller = self.app.models.playercontroller;
-            var currentAid = parseInt(playercontroller.get('aid'));
 
             if(!itemsOld){
                 itemsOld = this.models;
@@ -104,17 +140,20 @@ define([
 
             itemsMerge = _.map(items, function(item){
 
-                var data;
                 var model = _.findWhere(itemsOld, {aid:item.aid, owner_id:item.owner_id});
-
 
                 if(!model){
                     return item;
                 }
 
-                if(model && model.attributes){
-                    return _.extend(model.toJSON(), item);
+                if(model.attributes){
+                    model = model.toJSON();
                 }
+
+                if(item.attributes){
+                    item = item.toJSON();
+                }
+
 
                 return _.extend(model, item);
 
@@ -129,7 +168,7 @@ define([
          * load new items after collection reset (cache items)
          * @param data
          */
-        postLoad:function(data){
+        postLoad:function(data, callback){
 
             var self = this;
 
@@ -163,6 +202,11 @@ define([
 
                         }, this);
 
+                    }else{
+                        self.saveCacheCollection(items, data);
+                        if(callback){
+                            callback.call(self, items);
+                        }
                     }
 
                     self.app.log('MusicCollection.postLoad load set items. ' + self.length);
@@ -199,6 +243,9 @@ define([
 
                 if (r && r.response) {
 
+
+                    //console.log(JSON.stringify(r.response));
+
                     var items = r.response.slice(1, r.response.length);
                     items = self.mergeItems(items);
                     self.reset(items);
@@ -210,24 +257,6 @@ define([
                 }
             });
 
-        },
-
-        getElement: function () {
-            return this.currentElement;
-        },
-
-        setElement: function (model) {
-            this.currentElement = model;
-        },
-
-        next: function () {
-            this.setElement(this.at(this.indexOf(this.getElement()) + 1));
-            return this;
-        },
-
-        prev: function () {
-            this.setElement(this.at(this.indexOf(this.getElement()) - 1));
-            return this;
         }
 
     });

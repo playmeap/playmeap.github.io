@@ -64,24 +64,6 @@ define([
 
         }
 
-        //getElement: function() {
-        //    return this.currentElement;
-        //},
-        //
-        //setElement: function(model) {
-        //    this.currentElement = model;
-        //},
-        //
-        //next: function (){
-        //    this.setElement(this.at(this.indexOf(this.getElement()) + 1));
-        //    return this;
-        //},
-        //
-        //prev: function() {
-        //    this.setElement(this.at(this.indexOf(this.getElement()) - 1));
-        //    return this;
-        //}
-
     });
 
     return AlbumsCollection;

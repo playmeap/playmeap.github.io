@@ -22,17 +22,15 @@ define([
             e.preventDefault();
 
             var self = this;
-            var scope = this.app.fn.getScope();
 
-            VK.Auth.login(function (resp) {
+            this.app.vk.Auth.login(function(resp){
                 if (resp.session) {
-                    self.app.attributes.login = true;
-                    _.extend(self.app.attributes, resp.session);
+
+                    self.app.fn.set('login', true);
+                    self.app.fn.set(resp.session);
                     self.app.router.navigate('/', {trigger: true});
                 }
-            }, scope);
-
-
+            });
         },
 
         render: function () {

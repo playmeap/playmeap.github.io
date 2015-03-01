@@ -51,20 +51,47 @@ define([
 
         },
 
-        addItem:function(item){
+        addItem:function(item, attr, options){
 
-            var view = new AudioItemViewClass({
-                parent:self,
-                model:item
-            });
+            var self = this;
 
-            if(this.children[item.cid]){
-                this.children[item.cid].remove();
-            }
+            (function(i, a, o){
 
-            this.children[item.cid] = view;
-            this.$el.append(view.render().el);
+                var view = new AudioItemViewClass({
+                    parent:self,
+                    model:i
+                });
 
+                if(self.children[i.cid]){
+                    self.children[i.cid].remove();
+                }
+
+                self.children[i.cid] = view;
+
+                if(o
+                    && ( (o.at) || (o.at === 0 || o.at === -1))
+                ){
+
+                    if(o.at < 0){
+                        self.$el.prepend(view.render().el);
+                        return this;
+                    }
+
+                    var before = $('.audios-list-item:nth-child(' + o.at + ')');
+                    if(before.length > 0){
+                        before.after(view.render().el);
+                        return this;
+                    }
+
+                    return this;
+                }
+
+                self.$el.append(view.render().el);
+
+            })(item, attr, options);
+
+
+            return this;
         },
 
         render:function(){
@@ -73,7 +100,13 @@ define([
 
             var self = this;
             this.el.innerHTML = '';
-            this.$el.removeClass('preload');
+
+            /**
+             * mega fast rendering :D
+             */
+            setTimeout(function(){
+                self.$el.removeClass('preload');
+            }, 500);
 
             _.each(this.children, function(view, id){
                 view.remove();
